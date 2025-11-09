@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(shovologger
     VERSION 0.0.1
     DESCRIPTION "Leveled multi-threaded Logger library"
+    HOMEPAGE_URL "https://github.com/shuvlyy/shovologger"
     LANGUAGES CXX
 )
 
