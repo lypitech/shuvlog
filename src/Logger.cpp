@@ -41,22 +41,8 @@ void Logger::initialize(
             fs::create_directories(LOG_DIR);
         }
 
-        const std::string filename = generateLogFileName(projectName);
-        try {
-            instance.openLogFiles(filename);
-        } catch (const std::exception&) {
-            throw; // Letting user decide what to do.
-        }
-
-        const std::string header = generateHeader(instance, argc, argv);
-
-        if (instance._logFile.is_open()) {
-            instance._logFile << header;
-            instance._logFile.flush();
-        }
-        if (instance._latestLogFile.is_open()) {
-            instance._latestLogFile << header;
-            instance._latestLogFile.flush();
+        for (auto& sink : instance._sinks) {
+            sink->writeHeader(instance._projectName, argc, argv, instance._settings);
         }
 
         instance._isRunning = true;
@@ -65,37 +51,10 @@ void Logger::initialize(
     });
 }
 
-std::string Logger::generateHeader(
-    const Logger& instance,
-    const int argc,
-    const char* argv[]
-)
+void Logger::addSink(std::shared_ptr<logger::Sink> sink)
 {
-    std::ostringstream header;
-
-    header << "=== LOG START: " << formatTimestamp() << " ===\n";
-    header << "Project: " << instance._projectName << "\n";
-    header << "Command: ";
-    for (int i = 0; i < argc; i++) {
-        header << argv[i] << (i + 1 == argc ? "" : " ");
-    }
-    header << "\n";
-    header << "OS: " << osname() << " " << kernelver() << "\n";
-    header << "Minimum log level: " << levelToString(instance._settings.getMinimumLevel()) << "\n\n";
-
-    return header.str();
-}
-
-void Logger::openLogFiles(const std::string& filepath) {
-    _logFile.open(filepath, std::ios::app);
-    if (!_logFile.is_open()) {
-        throw logger::exception::LoggerException("Could not open log file: " + filepath);
-    }
-
-    _latestLogFile.open(std::format("{}/latest.log", LOG_DIR), std::ios::trunc);
-    if (!_latestLogFile.is_open()) {
-        throw logger::exception::LoggerException("Could not open latest.log");
-    }
+    std::lock_guard lock(_sinkMutex);
+    _sinks.push_back(std::move(sink));
 }
 
 void Logger::log(
@@ -107,6 +66,12 @@ void Logger::log(
     if (!_isInitialized) {
         std::cerr << "CAUTION: Logger has been used uninitialized.\n"
                   << "Make sure you call the initialize() function before performing any log."
+                  << std::endl;
+        return;
+    }
+
+    if (_sinks.empty()) {
+        std::cerr << "CAUTION: Trying to log with no sink."
                   << std::endl;
         return;
     }
@@ -158,30 +123,21 @@ void Logger::collectRemainingLogs(std::vector<Log>& batch)
 
 void Logger::flushBatch(std::vector<Log>& batch)
 {
+    std::vector<std::shared_ptr<logger::Sink>> sinksCopy;
+
+    // copying sinks references for outside writing safety
+    {
+        std::lock_guard lock(_sinkMutex);
+        sinksCopy = _sinks;
+    }
+
     for (Log& log : batch) {
-        const std::string fileLine = formatForFile(log);
-        const std::string consoleLine = formatForConsole(log);
-
-        std::ostream& out =
-            static_cast<uint8_t>(log.getLevel()) >= static_cast<uint8_t>(logger::Level::kError)
-                ? std::cerr
-                : std::cout;
-
-        out << consoleLine;
-
-        if (_logFile.is_open()) {
-            _logFile << fileLine;
-        }
-        if (_latestLogFile.is_open()) {
-            _latestLogFile << fileLine;
+        for (std::shared_ptr<logger::Sink>& sink : _sinks) {
+            sink->write(log, _settings);
         }
     }
-
-    if (_logFile.is_open()) {
-        _logFile.flush();
-    }
-    if (_latestLogFile.is_open()) {
-        _latestLogFile.flush();
+    for (auto& sink : sinksCopy) {
+        sink->flush();
     }
     batch.clear();
 }
@@ -190,7 +146,7 @@ std::string Logger::generateLogFileName(const std::string& projectName)
 {
     const std::string filename = std::format(
         "{}/{}_{}.log",
-        LOG_DIR, projectName, formatTimestamp(true)
+        LOG_DIR, projectName, formatTimestamp(system_clock::now(), true)
     );
     return filename;
 }
@@ -221,99 +177,13 @@ void Logger::shutdown()
     if (_worker.joinable()) {
         _worker.join();
     }
+    for (auto& sink : _sinks) {
+        sink->close();
+    }
     _isInitialized = false;
 }
 
 Logger::~Logger()
 {
     shutdown();
-    if (_logFile.is_open()) {
-        _logFile.close();
-    }
-    if (_latestLogFile.is_open()) {
-        _latestLogFile.close();
-    }
-}
-
-std::string Logger::formatTimestamp(
-    const bool forFilename,
-    const time_point<system_clock> timestamp
-)
-{
-    const std::tm tm = fromTimePoint(timestamp);
-    std::ostringstream oss;
-
-    if (forFilename) {
-        oss << std::put_time(&tm, "%Y-%m-%d_%H-%M-%S");
-    } else {
-        const auto ms = duration_cast<milliseconds>(timestamp.time_since_epoch()) % 1000;
-
-        oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S")
-            << '.' << std::setw(3) << std::setfill('0') << ms.count();
-    }
-    return oss.str();
-}
-
-std::string Logger::formatForConsole(const Log &log) const
-{
-    using namespace logger;
-
-    const bool isOutputColored = _settings.getColoredOutput();
-    std::string prefix;
-
-    if (_settings.getShowTimestamp()) {
-        prefix += "[" + formatTimestamp(false, log.getTimestamp()) + "] ";
-    }
-    if (isOutputColored) {
-        switch (log.getLevel()) {
-            case Level::kDebug:     prefix += "\033[34m";       break; // blue
-            case Level::kWarning:   prefix += "\033[33m";       break; // yellow
-            case Level::kError:
-            case Level::kCritical:  prefix += "\033[31m";       break; // red
-            case Level::kFatal:     prefix += "\033[41;97m";    break; // red BG white text
-            default:                                            break;
-        }
-    }
-
-    prefix += std::format(
-        "<{}> ",
-        levelToString(log.getLevel())
-    );
-
-    std::string sourcePart;
-    if (_settings.getShowSource()) {
-        sourcePart = std::format(
-            " ({}:{})",
-            log.getLocation().file_name(), log.getLocation().line()
-        );
-    }
-
-    std::string output = std::format(
-        "{}{}{}{}\n",
-        prefix, log.getMessage(), sourcePart,
-        isOutputColored ? "\033[0m" : ""
-    );
-    return output;
-}
-
-std::string Logger::formatForFile(const Log &log) const
-{
-    std::string ts;
-    if (_settings.getShowTimestamp()) {
-        ts = "[" + formatTimestamp(false, log.getTimestamp()) + "] ";
-    }
-
-    std::string src;
-    if (_settings.getShowSource()) {
-        src = std::format(
-            " ({}:{})",
-            log.getLocation().file_name(), log.getLocation().line()
-        );
-    }
-
-    return std::format(
-        "{}<{}> {}{}\n",
-        ts, levelToString(log.getLevel()),
-        log.getMessage(), src
-    );
 }

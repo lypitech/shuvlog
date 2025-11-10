@@ -2,7 +2,6 @@
 #define SHOVOLOGGER_LOGGER_H
 
 #include <fstream>
-#include <queue>
 #include <source_location>
 #include <string>
 #include <thread>
@@ -10,6 +9,7 @@
 #include "Level.h"
 #include "Log.h"
 #include "Settings.h"
+#include "Sink.h"
 #include "ThreadSafeQueue.h"
 
 #define LOG_DEBUG(s)    Logger::getInstance().log(s, logger::Level::kDebug)
@@ -36,6 +36,8 @@ public:
         logger::Settings settings = logger::Settings()
     );
 
+    void addSink(std::shared_ptr<logger::Sink> sink);
+
     void log(
         std::string_view message,
         logger::Level level = logger::Level::kInfo,
@@ -43,6 +45,10 @@ public:
     );
 
     void shutdown();
+
+    // helpers
+    static std::string levelToString(logger::Level level);
+    static std::string generateLogFileName(const std::string& projectName);
 
     [[nodiscard]] bool isInitialized() const { return _isInitialized; }
     [[nodiscard]] logger::Settings& getSettings() { return _settings; }
@@ -58,24 +64,6 @@ private:
     void collectRemainingLogs(std::vector<Log>& batch);
     void flushBatch(std::vector<Log>& batch);
 
-    // formatting and sinks
-    static std::string formatTimestamp(
-        bool forFilename = false,
-        std::chrono::time_point<std::chrono::system_clock> timestamp = std::chrono::system_clock::now()
-    ) ;
-    static std::string levelToString(logger::Level level) ;
-    std::string formatForConsole(const Log& log) const;
-    std::string formatForFile(const Log& log) const;
-
-    // helpers
-    static std::string generateLogFileName(const std::string& projectName) ;
-    void openLogFiles(const std::string& filepath);
-    static std::string generateHeader(
-        const Logger &instance,
-        int argc,
-        const char* argv[]
-    ) ;
-
     // configuration
     logger::Settings _settings;
     std::string _projectName;
@@ -84,8 +72,8 @@ private:
     std::thread _worker;
     ThreadSafeQueue<Log> _queue;
 
-    std::ofstream _logFile;
-    std::ofstream _latestLogFile;
+    std::vector<std::shared_ptr<logger::Sink>> _sinks;
+    std::mutex _sinkMutex;
 
     std::atomic<bool> _isRunning{false};
     std::atomic<bool> _isInitialized{false};
