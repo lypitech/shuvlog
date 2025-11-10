@@ -7,6 +7,7 @@
 #include <string>
 #include <thread>
 
+#include "Level.h"
 #include "Log.h"
 #include "Settings.h"
 #include "ThreadSafeQueue.h"
@@ -17,21 +18,6 @@
 #define LOG_WARN(s)     Logger::getInstance().log(s, logger::Level::kWarning)
 #define LOG_CRIT(s)     Logger::getInstance().log(s, logger::Level::kCritical)
 #define LOG_FATAL(s)    Logger::getInstance().log(s, logger::Level::kFatal)
-
-namespace logger
-{
-
-enum class Level : uint8_t
-{
-    kDebug      = 0x00,
-    kInfo       = 0x01,
-    kWarning    = 0x02,
-    kError      = 0x03,
-    kCritical   = 0x04,
-    kFatal      = 0x05
-};
-
-}
 
 class Logger final
 {
