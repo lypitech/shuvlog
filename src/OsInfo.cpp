@@ -8,9 +8,9 @@ static std::string runCommand(const std::string& command)
     std::array<char, 128> buf{};
     std::string res{};
 #if defined(__APPLE__) || defined(__linux__)
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
+    const std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
 #elif defined(_WIN32)
-    std::unique_ptr<FILE, decltype(&_pclose)> pipe(_popen(command.c_str(), "r"), _pclose);
+    const std::unique_ptr<FILE, decltype(&_pclose)> pipe(_popen(command.c_str(), "r"), _pclose);
 #else
     return {};
 #endif

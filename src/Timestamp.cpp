@@ -3,7 +3,7 @@
 #include <chrono>
 #include <iomanip>
 
-std::tm fromTimePoint(time_point<system_clock> timestamp)
+std::tm fromTimePoint(const time_point<system_clock> timestamp)
 {
     std::tm tm{};
     const auto t = system_clock::to_time_t(timestamp);
@@ -12,7 +12,7 @@ std::tm fromTimePoint(time_point<system_clock> timestamp)
     return tm;
 }
 
-std::string formatTimestamp(time_point<system_clock> timestamp, bool forFilename)
+std::string formatTimestamp(const time_point<system_clock> timestamp, const bool forFilename)
 {
     const std::tm tm = fromTimePoint(timestamp);
     std::ostringstream oss;

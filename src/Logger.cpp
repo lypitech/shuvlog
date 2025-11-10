@@ -5,7 +5,6 @@
 #include <format>
 
 #include "logger/Logger.h"
-#include "logger/OsInfo.h"
 #include "logger/Timestamp.h"
 #include "logger/Exceptions/LoggerException.h"
 
@@ -41,7 +40,7 @@ void Logger::initialize(
             fs::create_directories(LOG_DIR);
         }
 
-        for (auto& sink : instance._sinks) {
+        for (const auto& sink : instance._sinks) {
             sink->writeHeader(instance._projectName, argc, argv, instance._settings);
         }
 
@@ -132,11 +131,11 @@ void Logger::flushBatch(std::vector<Log>& batch)
     }
 
     for (Log& log : batch) {
-        for (std::shared_ptr<logger::Sink>& sink : _sinks) {
+        for (const auto& sink : _sinks) {
             sink->write(log, _settings);
         }
     }
-    for (auto& sink : sinksCopy) {
+    for (const auto& sink : sinksCopy) {
         sink->flush();
     }
     batch.clear();
@@ -177,7 +176,7 @@ void Logger::shutdown()
     if (_worker.joinable()) {
         _worker.join();
     }
-    for (auto& sink : _sinks) {
+    for (const auto& sink : _sinks) {
         sink->close();
     }
     _isInitialized = false;

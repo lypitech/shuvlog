@@ -51,7 +51,7 @@ void LogFileSink::write(
 
 void LogFileSink::writeHeader(
     const std::string &projectName,
-    int argc,
+    const int argc,
     const char *argv[],
     const Settings &settings
 )

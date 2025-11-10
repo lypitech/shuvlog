@@ -50,7 +50,7 @@ public:
 
     void waitForData(
         std::chrono::milliseconds timeout,
-        std::atomic<bool>& runningFlag
+        const std::atomic<bool>& runningFlag
     )
     {
         std::unique_lock lock(_mutex);
