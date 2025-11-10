@@ -24,6 +24,9 @@ add_library(shovologger STATIC
     src/Settings.cpp
     src/Log.cpp
     src/Timestamp.cpp
+
+    src/Sinks/ConsoleSink.cpp
+    src/Sinks/LogFileSink.cpp
 )
 
 # === Tests ===
