@@ -27,6 +27,7 @@ add_library(shovologger STATIC
 
     src/Sinks/ConsoleSink.cpp
     src/Sinks/LogFileSink.cpp
+        src/Sinks/JsonFileSink.cpp
 )
 
 # === Tests ===
