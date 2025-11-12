@@ -8,8 +8,8 @@
 namespace logger
 {
 
-LogFileSink::LogFileSink(const std::string &filepath)
     : _file(filepath, std::ios::app)
+LogFileSink::LogFileSink(const std::string& filepath)
 {
     if (!_file.is_open()) {
         throw exception::LoggerException(std::format("{}: Could not open file.", filepath));
@@ -50,10 +50,10 @@ void LogFileSink::write(
 }
 
 void LogFileSink::writeHeader(
-    const std::string &projectName,
+    const std::string& projectName,
     const int argc,
-    const char *argv[],
-    const Settings &settings
+    const char* argv[],
+    const Settings& settings
 )
 {
     std::ostringstream header;

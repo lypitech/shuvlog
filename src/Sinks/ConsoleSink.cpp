@@ -52,7 +52,7 @@ static std::string formatLog(
     return output;
 }
 
-void ConsoleSink::write(const Log &log, const Settings &settings)
+void ConsoleSink::write(const Log& log, const Settings& settings)
 {
     std::ostream& out =
         static_cast<uint8_t>(log.getLevel()) >= static_cast<uint8_t>(Level::kError)
@@ -65,10 +65,10 @@ void ConsoleSink::write(const Log &log, const Settings &settings)
 }
 
 void ConsoleSink::writeHeader(
-    const std::string &/*projectName*/,
+    const std::string& /*projectName*/,
     int /*argc*/,
-    const char */*argv*/[],
-    const Settings &/*settings*/
+    const char* /*argv*/[],
+    const Settings& /*settings*/
 ) {}
 
 void ConsoleSink::flush()
