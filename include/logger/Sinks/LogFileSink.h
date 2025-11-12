@@ -24,7 +24,7 @@ public:
     void close() override;
 
 private:
-    std::ofstream _file;
+    std::fstream _file;
 };
 
 }
