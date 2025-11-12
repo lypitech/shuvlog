@@ -14,6 +14,10 @@ LogFileSink::LogFileSink(const std::string& filepath)
     if (!_file.is_open()) {
         throw exception::LoggerException(std::format("{}: Could not open file.", filepath));
     }
+    if (!filepath.ends_with(".log")) {
+        std::cerr << "CAUTION: Prefer piping Log sinks to .log files."
+                  << std::endl;
+    }
 }
 
 static std::string formatLog(
