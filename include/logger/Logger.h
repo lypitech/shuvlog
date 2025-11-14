@@ -33,7 +33,7 @@ public:
         const std::string& projectName,
         int argc,
         const char* argv[],
-        logger::Settings settings = logger::Settings()
+        const logger::Settings& settings = logger::Settings()
     );
 
     void addSink(std::shared_ptr<logger::Sink> sink);

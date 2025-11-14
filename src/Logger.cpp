@@ -24,7 +24,7 @@ void Logger::initialize(
     const std::string& projectName,
     const int argc,
     const char* argv[],
-    const logger::Settings settings
+    const logger::Settings& settings
 )
 {
     std::ios::sync_with_stdio(true);
