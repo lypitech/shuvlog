@@ -1,23 +1,23 @@
 #include <iostream>
 
-#include "logger/Sinks/JsonFileSink.h"
+#include "logger/Exceptions/BadFileExtension.h"
+#include "logger/Exceptions/LoggerException.h"
 #include "logger/Logger.h"
 #include "logger/OsInfo.h"
+#include "logger/Sinks/JsonFileSink.h"
 #include "logger/Timestamp.h"
-#include "logger/Exceptions/LoggerException.h"
 
 namespace logger
 {
 
 JsonFileSink::JsonFileSink(const std::string &filepath)
-    : _file(filepath, std::ios::in | std::ios::out | std::ios::binary)
+    : _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
 {
     if (!_file.is_open()) {
         throw exception::LoggerException(std::format("{}: Could not open file.", filepath));
     }
     if (!filepath.ends_with(".json")) {
-        std::cerr << "CAUTION: Prefer piping JSON sinks to .json files."
-                  << std::endl;
+        throw exception::BadFileExtension("JSON");
     }
 }
 

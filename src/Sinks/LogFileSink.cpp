@@ -1,22 +1,23 @@
-#include "logger/Sinks/LogFileSink.h"
+#include <iostream>
 
+#include "logger/Exceptions/BadFileExtension.h"
+#include "logger/Exceptions/LoggerException.h"
 #include "logger/Logger.h"
 #include "logger/OsInfo.h"
+#include "logger/Sinks/LogFileSink.h"
 #include "logger/Timestamp.h"
-#include "logger/Exceptions/LoggerException.h"
 
 namespace logger
 {
 
-    : _file(filepath, std::ios::app)
 LogFileSink::LogFileSink(const std::string& filepath)
+    : _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
 {
     if (!_file.is_open()) {
         throw exception::LoggerException(std::format("{}: Could not open file.", filepath));
     }
     if (!filepath.ends_with(".log")) {
-        std::cerr << "CAUTION: Prefer piping Log sinks to .log files."
-                  << std::endl;
+        throw exception::BadFileExtension("Log");
     }
 }
 
