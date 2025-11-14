@@ -1,12 +1,26 @@
 #include "logger/Logger.h"
+#include "logger/Sinks/ConsoleSink.h"
+#include "logger/Sinks/JsonFileSink.h"
+#include "logger/Sinks/LogFileSink.h"
 
-int main(int argc, const char* argv[])
+int main(const int argc, const char *argv[])
 {
+    Logger::getInstance().addSink(std::make_shared<logger::ConsoleSink>());
+    Logger::getInstance().addSink(std::make_shared<logger::LogFileSink>(
+        Logger::generateLogFileName("Tester3000")));
+    Logger::getInstance().addSink(std::make_shared<logger::LogFileSink>("logs/latest.log"));
+    Logger::getInstance().addSink(std::make_shared<logger::JsonFileSink>("logs/latest.json"));
+
     Logger::initialize(
         "Tester3000",
         argc, argv,
         logger::Settings(
-            logger::Level::kDebug
+            logger::Level::kDebug,
+            true,
+            true,
+            false,
+            1,
+            0
         )
     );
 
@@ -16,5 +30,6 @@ int main(int argc, const char* argv[])
     LOG_ERR("Error log.");
     LOG_CRIT("Critical log.");
     LOG_FATAL("Fatal log.");
+    // raise(11);
     return 0;
 }
