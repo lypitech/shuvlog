@@ -1,11 +1,13 @@
 #ifndef SHOVOLOGGER_LOGGER_H
 #define SHOVOLOGGER_LOGGER_H
 
+#include <iostream>
 #include <fstream>
 #include <source_location>
 #include <string>
 #include <thread>
 
+#include "Exceptions/LoggerException.h"
 #include "Level.h"
 #include "Log.h"
 #include "Settings.h"
@@ -36,7 +38,27 @@ public:
         const logger::Settings& settings = logger::Settings()
     );
 
-    void addSink(std::shared_ptr<logger::Sink> sink);
+    template<typename T, typename... Args>
+    void addSink(Args... args)
+    {
+        static_assert(
+            std::is_base_of_v<logger::Sink, T>,
+            "T must inherit from logger::Sink."
+        );
+
+        try {
+            auto sink = std::make_unique<T>(std::forward<Args>(args)...);
+            std::lock_guard lock(_sinkMutex);
+
+            _sinks.push_back(std::move(sink));
+        } catch (const logger::exception::LoggerException& e) {
+            if (_isInitialized && !_sinks.empty()) {
+                LOG_WARN(e.what());
+            } else {
+                std::cerr << e;
+            }
+        }
+    }
 
     void log(
         std::string_view message,

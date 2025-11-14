@@ -50,12 +50,6 @@ void Logger::initialize(
     });
 }
 
-void Logger::addSink(std::shared_ptr<logger::Sink> sink)
-{
-    std::lock_guard lock(_sinkMutex);
-    _sinks.push_back(std::move(sink));
-}
-
 void Logger::log(
     const std::string_view message,
     logger::Level level,
