@@ -39,21 +39,19 @@ static std::string formatLog(const Log& log)
 
 void JsonFileSink::write(
     const Log& log,
-    const Settings& /*settings*/ // in a JSON (machine-readable code), we need all the information the Logger is giving
-                                 // us.
+    const Settings& /*settings*/ // in a JSON (machine-readable code), we need
+                                 // all the information the Logger can possibly
+                                 // provide.
 )
 {
     char c;
 
     _file.seekg(-3, std::ios::end);
     _file.get(c);
-    std::cout << "n-3: " << c << std::endl;
     _file.seekp(-2, std::ios::end);
     if (c != '[') {
-        std::cout << "well it's not the first log, so we need to add a comma." << std::endl;
         _file << ",";
     }
-    std::cout << "and now we're appending the log." << std::endl;
     _file << formatLog(log) << "]}";
 }
 
