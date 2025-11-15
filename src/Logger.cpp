@@ -24,6 +24,7 @@ void Logger::initialize(
     const std::string& projectName,
     const int argc,
     const char* argv[],
+    const logger::BuildInfo& buildInfo,
     const logger::Settings& settings
 )
 {
@@ -41,7 +42,7 @@ void Logger::initialize(
         }
 
         for (const auto& sink : instance._sinks) {
-            sink->writeHeader(instance._projectName, argc, argv, instance._settings);
+            sink->writeHeader(instance._projectName, argc, argv, buildInfo, instance._settings);
         }
 
         instance._isRunning = true;

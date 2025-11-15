@@ -14,6 +14,7 @@ public:
         const std::string &projectName,
         int argc,
         const char *argv[],
+        const BuildInfo& buildInfo,
         const Settings &settings
     ) override;
     void flush() override;

@@ -14,6 +14,7 @@ int main(const int argc, const char *argv[])
     Logger::initialize(
         "Tester3000",
         argc, argv,
+        logger::BuildInfo::fromCMake(),
         logger::Settings(
             logger::Level::kDebug,
             true,

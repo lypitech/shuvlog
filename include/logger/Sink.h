@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "BuildInfo.h"
 #include "Log.h"
 #include "Settings.h"
 
@@ -19,6 +20,7 @@ public:
         const std::string& projectName,
         int argc,
         const char* argv[],
+        const BuildInfo& buildInfo,
         const Settings& settings
     ) = 0;
     virtual void flush() = 0;

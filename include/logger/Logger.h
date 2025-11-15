@@ -7,6 +7,7 @@
 #include <string>
 #include <thread>
 
+#include "BuildInfo.h"
 #include "Exceptions/LoggerException.h"
 #include "Level.h"
 #include "Log.h"
@@ -35,6 +36,7 @@ public:
         const std::string& projectName,
         int argc,
         const char* argv[],
+        const logger::BuildInfo& buildInfo,
         const logger::Settings& settings = logger::Settings()
     );
 
@@ -89,6 +91,7 @@ private:
     // configuration
     logger::Settings _settings;
     std::string _projectName;
+    logger::BuildInfo _buildInfo = logger::BuildInfo::unknown();
 
     // runtime
     std::thread _worker;

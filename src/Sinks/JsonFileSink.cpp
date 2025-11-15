@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "logger/Exceptions/BadFileExtension.h"
 #include "logger/Exceptions/LoggerException.h"
 #include "logger/Logger.h"
@@ -59,6 +57,7 @@ void JsonFileSink::writeHeader(
     const std::string &projectName,
     const int argc,
     const char* argv[],
+    const BuildInfo& /*buildInfo*/,
     const Settings& settings
 )
 {
