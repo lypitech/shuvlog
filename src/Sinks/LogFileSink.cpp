@@ -1,15 +1,12 @@
-#include <iostream>
-
 #include "logger/Exceptions/BadFileExtension.h"
-#include "logger/Exceptions/LoggerException.h"
+#include "logger/Exceptions/CouldNotOpenFile.h"
 #include "logger/Logger.h"
 #include "logger/OsInfo.h"
 #include "logger/Sinks/LogFileSink.h"
+#include "logger/Timestamp.h"
 
 #include <map>
 #include <__ranges/transform_view.h>
-
-#include "logger/Timestamp.h"
 
 namespace logger
 {
@@ -18,7 +15,7 @@ LogFileSink::LogFileSink(const std::string& filepath)
     : _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
 {
     if (!_file.is_open()) {
-        throw exception::LoggerException(std::format("{}: Could not open file.", filepath));
+        throw exception::CouldNotOpenFile(filepath);
     }
     if (!filepath.ends_with(".log")) {
         throw exception::BadFileExtension("Log");
