@@ -5,6 +5,7 @@
 #include <format>
 
 #include "logger/Logger.h"
+#include "logger/Thread.h"
 #include "logger/Timestamp.h"
 #include "logger/Exceptions/LoggerException.h"
 
@@ -32,6 +33,8 @@ void Logger::initialize(
     std::cerr.tie(&std::cout);
 
     std::call_once(initFlag, [&] {
+        logger::setThreadLabel("MainThread");
+
         auto& instance = getInstance();
 
         instance._projectName = projectName;
