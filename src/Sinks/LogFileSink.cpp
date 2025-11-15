@@ -5,6 +5,10 @@
 #include "logger/Logger.h"
 #include "logger/OsInfo.h"
 #include "logger/Sinks/LogFileSink.h"
+
+#include <map>
+#include <__ranges/transform_view.h>
+
 #include "logger/Timestamp.h"
 
 namespace logger
@@ -23,26 +27,19 @@ LogFileSink::LogFileSink(const std::string& filepath)
 
 static std::string formatLog(
     const Log& log,
-    const Settings& settings
+    const Settings& /*settings*/
 )
 {
-    std::string ts;
-    if (settings.getShowTimestamp()) {
-        ts = "[" + formatTimestamp(log.getTimestamp()) + "] ";
-    }
-
-    std::string src;
-    if (settings.getShowSource()) {
-        src = std::format(
-            " ({}:{})",
-            log.getLocation().file_name(), log.getLocation().line()
-        );
-    }
+    std::ostringstream oss;
+    oss << log.getThreadId();
 
     return std::format(
-        "{}<{}> {}{}\n",
-        ts, Logger::levelToString(log.getLevel()),
-        log.getMessage(), src
+        "{}  [{} ({})] {:>8}: {} ({}:{})\n", // 8 is "CRITICAL"'s length (longest type)
+        formatTimestamp(log.getTimestamp()),
+        log.getThreadName(), oss.str(),
+        Logger::levelToString(log.getLevel()),
+        log.getMessage(),
+        log.getLocation().file_name(), log.getLocation().line()
     );
 }
 
@@ -62,17 +59,44 @@ void LogFileSink::writeHeader(
     const Settings& settings
 )
 {
+    std::ostringstream command;
+    for (int k = 0; k < argc; k++) {
+        command << argv[k];
+    }
+    std::vector<std::pair<std::string, std::string>> infos = {
+        { "",                   ""                                                  },
+        { "Project",            projectName                                         },
+        { "Version",            buildInfo.getVersion()                              },
+        { "Build type",         buildInfo.getType()                                 },
+        { "Minimum level",      Logger::levelToString(settings.getMinimumLevel())   },
+        { "",                   ""                                                  },
+        { "Command",            command.str()                                       },
+        { "Start time",         formatTimestamp(system_clock::now())                },
+        { "",                   ""                                                  },
+        { "OS",                 std::format("{} {}", osname(), kernelver())  },
+        { "Compiler",           buildInfo.getCompiler()                             },
+        { "Compilation flags",  buildInfo.getCompilerFlags()                        },
+        { "Build system",       buildInfo.getBuildSystem()                          },
+        { "",                   ""                                                  },
+    };
+
+    size_t maxKeyLen = std::ranges::max(infos |
+        std::ranges::views::transform([](auto const& p){
+            return p.first.size();
+        })
+    );
+
     std::ostringstream header;
 
-    header << "=== LOG START: " << formatTimestamp(system_clock::now()) << " ===\n";
-    header << "Project: " << projectName << "\n";
-    header << "Command: ";
-    for (int i = 0; i < argc; i++) {
-        header << argv[i] << (i + 1 == argc ? "" : " ");
+    header << "/*************************************************\n";
+    for (auto& [label, value] : infos) {
+        if (label.empty()) {
+            header << "|\n";
+            continue;
+        }
+        header << std::format("|  {:{}}  :  {}\n", label, maxKeyLen, value);
     }
-    header << "\n";
-    header << "OS: " << osname() << " " << kernelver() << "\n";
-    header << "Minimum log level: " << Logger::levelToString(settings.getMinimumLevel()) << "\n\n";
+    header << "\\*************************************************\n\n";
 
     _file << header.str();
 }
