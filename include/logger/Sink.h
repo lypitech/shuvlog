@@ -10,9 +10,30 @@
 namespace logger
 {
 
+namespace sink
+{
+
+    struct Settings
+    {
+        bool showTimestamp = true;
+        bool showOnlyTime = true;
+        bool showMilliseconds = true;
+
+        bool showThreadInfo = true;
+        bool showThreadId = true;
+
+        bool showSource = true;
+        bool showLineNumber = true;
+        bool showColumnNumber = true;
+    };
+
+}
+
 class Sink
 {
 public:
+    explicit Sink(Settings settings)
+        : _settings(settings) {}
     virtual ~Sink() = default;
 
     virtual void write(const Log& log, const Settings& settings) = 0;
@@ -25,6 +46,9 @@ public:
     ) = 0;
     virtual void flush() = 0;
     virtual void close() = 0;
+
+private:
+    Settings _settings;
 };
 
 }

@@ -11,8 +11,12 @@
 namespace logger
 {
 
-LogFileSink::LogFileSink(const std::string& filepath)
-    : _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
+LogFileSink::LogFileSink(
+    const std::string& filepath,
+    Settings settings
+)
+    : Sink(settings)
+    , _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
 {
     if (!_file.is_open()) {
         throw exception::CouldNotOpenFile(filepath);

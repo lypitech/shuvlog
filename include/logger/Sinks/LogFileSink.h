@@ -11,7 +11,10 @@ namespace logger
 class LogFileSink : public Sink
 {
 public:
-    explicit LogFileSink(const std::string& filepath);
+    explicit LogFileSink(
+        const std::string& filepath,
+        Settings settings = Settings()
+    );
 
     void write(const Log& log, const Settings& settings) override;
     void writeHeader(

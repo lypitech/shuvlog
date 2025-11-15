@@ -8,8 +8,12 @@
 namespace logger
 {
 
-NdJsonFileSink::NdJsonFileSink(const std::string &filepath)
-    : _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
+NdJsonFileSink::NdJsonFileSink(
+    const std::string &filepath,
+    Settings settings
+)
+    : Sink(settings)
+    , _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
 {
     if (!_file.is_open()) {
         throw exception::CouldNotOpenFile(filepath);

@@ -11,7 +11,10 @@ namespace logger
 class NdJsonFileSink : public Sink
 {
 public:
-    explicit NdJsonFileSink(const std::string& filepath);
+    explicit NdJsonFileSink(
+        const std::string& filepath,
+        Settings settings = Settings()
+    );
 
     void write(const Log& log, const Settings& settings) override;
     void writeHeader(

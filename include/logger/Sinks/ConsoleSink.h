@@ -9,6 +9,8 @@ namespace logger
 class ConsoleSink : public Sink
 {
 public:
+    explicit ConsoleSink(Settings settings = Settings());
+
     void write(const Log& log, const Settings& settings) override;
     void writeHeader(
         const std::string &projectName,

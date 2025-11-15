@@ -8,6 +8,10 @@
 namespace logger
 {
 
+ConsoleSink::ConsoleSink(Settings settings)
+    : Sink(settings)
+{}
+
 static std::string formatLog(
     const Log& log,
     const Settings& /*settings*/
