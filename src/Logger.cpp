@@ -137,13 +137,16 @@ void Logger::flushBatch(std::vector<Log>& batch)
     batch.clear();
 }
 
-std::string Logger::generateLogFileName(const std::string& projectName)
+std::string Logger::generateLogFileName(
+    const std::string& projectName,
+    const std::string& extension
+)
 {
-    const std::string filename = std::format(
-        "{}/{}_{}.log",
-        LOG_DIR, projectName, formatTimestamp(system_clock::now(), true)
+    return std::format(
+        "{}_{}.{}",
+        projectName, formatTimestamp(system_clock::now(), true),
+        extension
     );
-    return filename;
 }
 
 std::string Logger::levelToString(const logger::Level level)

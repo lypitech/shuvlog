@@ -72,7 +72,7 @@ public:
 
     // helpers
     static std::string levelToString(logger::Level level);
-    static std::string generateLogFileName(const std::string& projectName);
+    static std::string generateLogFileName(const std::string& projectName, const std::string& extension);
 
     [[nodiscard]] bool isInitialized() const { return _isInitialized; }
     [[nodiscard]] logger::Settings& getSettings() { return _settings; }
