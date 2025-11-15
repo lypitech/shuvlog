@@ -34,12 +34,16 @@ BuildInfo BuildInfo::fromCMake()
 
     const std::string type = get(SHLG_BUILD_TYPE);
     const std::string version = get(SHLG_BUILD_VERSION);
-    const std::string flags = get(SHLG_COMPILER_FLAGS);
+    std::string flags = get(SHLG_COMPILER_FLAGS);
     const std::string buildSystem = get(SHLG_BUILD_SYSTEM);
 
     const std::string compiler =
         get(SHLG_COMPILER_ID) + " " +
         get(SHLG_COMPILER_VERSION, "");
+
+    if (flags == " ") {
+        flags = "None";
+    }
 
     return BuildInfo(type, version, compiler, flags, buildSystem);
 }
