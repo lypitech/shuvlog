@@ -1,13 +1,11 @@
 #include <filesystem>
 #include <chrono>
 #include <iostream>
-#include <sstream>
 #include <format>
 
 #include "logger/Logger.h"
 #include "logger/Thread.h"
 #include "logger/Timestamp.h"
-#include "logger/Exceptions/LoggerException.h"
 
 namespace fs = std::filesystem;
 
@@ -150,16 +148,15 @@ std::string Logger::generateLogFileName(const std::string& projectName)
 
 std::string Logger::levelToString(const logger::Level level)
 {
-    using namespace logger;
-
     switch (level) {
-        case Level::kDebug:     return "DEBUG";
-        case Level::kInfo:      return "INFO";
-        case Level::kWarning:   return "WARNING";
-        case Level::kError:     return "ERROR";
-        case Level::kCritical:  return "CRITICAL";
-        case Level::kFatal:     return "FATAL";
-        default:                return "UNKNOWN";
+        using enum logger::Level;
+        case kDebug:    return "DEBUG";
+        case kInfo:     return "INFO";
+        case kWarning:  return "WARNING";
+        case kError:    return "ERROR";
+        case kCritical: return "CRITICAL";
+        case kFatal:    return "FATAL";
+        default:        return "UNKNOWN";
     }
 }
 
