@@ -31,7 +31,7 @@ static std::string formatLog(
     oss << log.getThreadId();
 
     return std::format(
-        "{}  [{} ({})] {:>8}: {} ({}:{})\n", // 8 is "CRITICAL"'s length (longest type)
+        "{} [{} ({})] {:>8}: {} ({}:{})\n", // 8 is "CRITICAL"'s length (longest type)
         formatTimestamp(log.getTimestamp()),
         log.getThreadName(), oss.str(),
         Logger::levelToString(log.getLevel()),
@@ -91,7 +91,7 @@ void LogFileSink::writeHeader(
             header << "|\n";
             continue;
         }
-        header << std::format("|  {:{}}  :  {}\n", label, maxKeyLen, value);
+        header << std::format("|   {:{}}  :  {}\n", label, maxKeyLen, value);
     }
     header << "\\*************************************************\n\n";
 

@@ -26,6 +26,7 @@ static std::string formatLog(const Log& log)
     oss << "{";
     oss << R"("timestamp":")" << formatTimestamp(log.getTimestamp()) << "\",";
     oss << R"("type":")" << Logger::levelToString(log.getLevel()) << "\",";
+    oss << R"("thread":{"name":")" << log.getThreadName() << R"(","id":")" << log.getThreadId() << "\"},";
     oss << R"("source":")" << log.getLocation().file_name() << "\",";
     oss << R"("functionName":")" << log.getLocation().function_name() << "\",";
     oss << R"("line":)" << log.getLocation().line() << ",";
@@ -57,7 +58,7 @@ void JsonFileSink::writeHeader(
     const std::string &projectName,
     const int argc,
     const char* argv[],
-    const BuildInfo& /*buildInfo*/,
+    const BuildInfo& buildInfo,
     const Settings& settings
 )
 {
@@ -65,17 +66,22 @@ void JsonFileSink::writeHeader(
 
     body << "{";
     body << R"("projectName":")" << projectName << "\",";
-    body << R"("createdAt":")" << formatTimestamp(system_clock::now()) << "\",";
+    body << R"("version":")" << buildInfo.getVersion() << "\",";
+    body << R"("buildType":")" << buildInfo.getType() << "\",";
+    body << R"("minimumLevel":")" << Logger::levelToString(settings.getMinimumLevel()) << "\",";
 
-    body << R"("commandUsed":")";
+    body << R"("command":")";
     for (int i = 0; i < argc; i++) {
         body << argv[i] << (i + 1 == argc ? "" : " ");
     }
     body << "\",";
+    body << R"("startTime":")" << formatTimestamp(system_clock::now()) << "\",";
 
     body << R"("osName":")" << osname() << "\",";
     body << R"("kernelVersion":")" << kernelver() << "\",";
-    body << R"("minimumLevel":")" << Logger::levelToString(settings.getMinimumLevel()) << "\",";
+    body << R"("compilerName":")" << buildInfo.getCompiler() << "\",";
+    body << R"("compilationFlags":")" << buildInfo.getCompilerFlags() << "\",";
+    body << R"("buildSystem":")" << buildInfo.getBuildSystem() << "\",";
 
     body << R"("logs":[])";
 

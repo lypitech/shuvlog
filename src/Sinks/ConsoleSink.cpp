@@ -13,13 +13,10 @@ static std::string formatLog(
     const Settings& /*settings*/
 )
 {
-    std::ostringstream oss;
-    oss << log.getThreadId();
-
     return std::format(
-        "{}  [{} ({})] {:>8}: {} ({}:{})\n", // 8 is "CRITICAL"'s length (longest type)
+        "{} [{}] {:>8}: {} ({}:{})\n", // 8 is "CRITICAL"'s length (longest type)
         formatTimestamp(log.getTimestamp()),
-        log.getThreadName(), oss.str(),
+        log.getThreadName(),
         Logger::levelToString(log.getLevel()),
         log.getMessage(),
         log.getLocation().file_name(), log.getLocation().line()
