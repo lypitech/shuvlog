@@ -54,10 +54,12 @@ public:
 
             _sinks.push_back(std::move(sink));
         } catch (const logger::exception::LoggerException& e) {
+            const std::string error = std::format("Encountered an error while adding Sink: {}", e.what());
+
             if (_isInitialized && !_sinks.empty()) {
-                LOG_WARN(e.what());
+                LOG_WARN(error);
             } else {
-                std::cerr << e;
+                std::cerr << error << std::endl;
             }
         }
     }
