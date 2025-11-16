@@ -41,7 +41,6 @@ target_compile_definitions(shlg_parent INTERFACE
 add_library(shovologger STATIC
     src/Logger.cpp
     src/OsInfo.cpp
-    src/Settings.cpp
     src/Log.cpp
     src/Timestamp.cpp
     src/BuildInfo.cpp
