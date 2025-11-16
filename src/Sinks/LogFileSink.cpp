@@ -31,17 +31,66 @@ static std::string formatLog(
     const sink::Settings& settings
 )
 {
-    std::ostringstream oss;
-    oss << log.getThreadId();
+    std::string output;
+    output.reserve(192); // avoids the first necessary dynamic allocations, to save some cpu cycles
 
-    return std::format(
-        "{} [{} ({})] {:>8}: {} ({}:{})\n", // 8 is "CRITICAL"'s length (longest type)
-        formatTimestamp(log.getTimestamp()),
-        log.getThreadName(), oss.str(),
-        Logger::levelToString(log.getLevel()),
-        log.getMessage(),
-        log.getLocation().file_name(), log.getLocation().line()
+    if (settings.showTimestamp) {
+        std::format_to(std::back_inserter(output),
+            "{} ",
+            formatTimestamp(
+                log.getTimestamp(),
+                settings.showOnlyTime,
+                settings.showMilliseconds
+            )
+        );
+    }
+
+    if (settings.showThreadInfo) {
+        if (settings.showThreadId) {
+            std::format_to(std::back_inserter(output),
+                "[{} ({})] ",
+                log.getThreadName(),
+                std::hash<std::thread::id>{}(log.getThreadId())
+            );
+        } else {
+            std::format_to(std::back_inserter(output),
+                "[{}] ",
+                log.getThreadName()
+            );
+        }
+    }
+
+    std::format_to(std::back_inserter(output),
+        "{:>8}: ",
+        Logger::levelToString(log.getLevel())
     );
+
+    output += log.getMessage();
+
+    if (settings.showSource) {
+        const auto& loc = log.getLocation();
+
+        output += " (";
+        output += loc.file_name();
+
+        if (settings.showLineNumber) {
+            std::format_to(std::back_inserter(output),
+                ":{}",
+                loc.line()
+            );
+        }
+        if (settings.showColumnNumber) {
+            std::format_to(std::back_inserter(output),
+                ":{}",
+                loc.column()
+            );
+        }
+        output += ")";
+    }
+
+    output += "\n";
+
+    return output;
 }
 
 void LogFileSink::write(const Log& log)
