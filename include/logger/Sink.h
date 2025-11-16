@@ -16,7 +16,7 @@ namespace sink
     struct Settings
     {
         bool showTimestamp = true;
-        bool showOnlyTime = true;
+        bool showOnlyTime = false;
         bool showMilliseconds = true;
 
         bool showThreadInfo = true;

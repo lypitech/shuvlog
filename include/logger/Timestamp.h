@@ -6,6 +6,11 @@
 using namespace std::chrono;
 
 std::tm fromTimePoint(time_point<system_clock> timestamp);
-std::string formatTimestamp(time_point<system_clock> timestamp, bool forFilename = false);
+std::string formatTimestamp(
+    time_point<system_clock> timestamp,
+    bool showOnlyTime = false,
+    bool showMilliseconds = true,
+    bool forFilename = false
+);
 
 #endif //SHOVOLOGGER_TIMESTAMP_H

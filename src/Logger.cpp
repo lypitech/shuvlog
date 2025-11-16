@@ -144,7 +144,7 @@ std::string Logger::generateLogFileName(
 {
     return std::format(
         "{}_{}.{}",
-        projectName, formatTimestamp(system_clock::now(), true),
+        projectName, formatTimestamp(system_clock::now(), true, true, true),
         extension
     );
 }
