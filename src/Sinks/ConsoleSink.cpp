@@ -8,13 +8,13 @@
 namespace logger
 {
 
-ConsoleSink::ConsoleSink(Settings settings)
+ConsoleSink::ConsoleSink(sink::Settings settings)
     : Sink(settings)
 {}
 
 static std::string formatLog(
     const Log& log,
-    const Settings& /*settings*/
+    const sink::Settings& settings
 )
 {
     return std::format(
@@ -27,14 +27,14 @@ static std::string formatLog(
     );
 }
 
-void ConsoleSink::write(const Log& log, const Settings& settings)
+void ConsoleSink::write(const Log& log)
 {
     std::ostream& out =
         static_cast<uint8_t>(log.getLevel()) >= static_cast<uint8_t>(Level::kError)
             ? std::cerr
             : std::cout;
 
-    const std::string output = formatLog(log, settings);
+    const std::string output = formatLog(log, _settings);
 
     out << output;
 }

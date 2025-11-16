@@ -32,11 +32,11 @@ namespace sink
 class Sink
 {
 public:
-    explicit Sink(Settings settings)
+    explicit Sink(sink::Settings settings)
         : _settings(settings) {}
     virtual ~Sink() = default;
 
-    virtual void write(const Log& log, const Settings& settings) = 0;
+    virtual void write(const Log& log) = 0;
     virtual void writeHeader(
         const std::string& projectName,
         int argc,
@@ -47,8 +47,8 @@ public:
     virtual void flush() = 0;
     virtual void close() = 0;
 
-private:
-    Settings _settings;
+protected:
+    sink::Settings _settings;
 };
 
 }

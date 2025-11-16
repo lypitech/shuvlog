@@ -10,7 +10,7 @@ namespace logger
 
 NdJsonFileSink::NdJsonFileSink(
     const std::string &filepath,
-    Settings settings
+    sink::Settings settings
 )
     : Sink(settings)
     , _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
@@ -40,12 +40,7 @@ static std::string formatLog(const Log& log)
     return oss.str();
 }
 
-void NdJsonFileSink::write(
-    const Log& log,
-    const Settings& /*settings*/ // in a JSON (machine-readable code), we need
-                                 // all the information the Logger can possibly
-                                 // provide.
-)
+void NdJsonFileSink::write(const Log& log)
 {
     _file << formatLog(log) << "\n";
 }

@@ -128,7 +128,7 @@ void Logger::flushBatch(std::vector<Log>& batch)
 
     for (Log& log : batch) {
         for (const auto& sink : _sinks) {
-            sink->write(log, _settings);
+            sink->write(log);
         }
     }
     for (const auto& sink : sinksCopy) {

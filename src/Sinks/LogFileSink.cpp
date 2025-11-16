@@ -13,7 +13,7 @@ namespace logger
 
 LogFileSink::LogFileSink(
     const std::string& filepath,
-    Settings settings
+    sink::Settings settings
 )
     : Sink(settings)
     , _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
@@ -28,7 +28,7 @@ LogFileSink::LogFileSink(
 
 static std::string formatLog(
     const Log& log,
-    const Settings& /*settings*/
+    const sink::Settings& settings
 )
 {
     std::ostringstream oss;
@@ -44,12 +44,9 @@ static std::string formatLog(
     );
 }
 
-void LogFileSink::write(
-    const Log& log,
-    const Settings& settings
-)
+void LogFileSink::write(const Log& log)
 {
-    _file << formatLog(log, settings);
+    _file << formatLog(log, _settings);
 }
 
 void LogFileSink::writeHeader(
