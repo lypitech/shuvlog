@@ -13,17 +13,12 @@
 #include <winternl.h>
 #endif
 
+#if defined(__APPLE__)
 static std::string runCommand(const std::string& command)
 {
     std::array<char, 128> buf{};
     std::string res{};
-#if defined(__APPLE__) || defined(__linux__)
     const std::unique_ptr<FILE, int(*)(FILE*)> pipe(popen(command.c_str(), "r"), pclose);
-#elif defined(_WIN32)
-    const std::unique_ptr<FILE, decltype(&_pclose)> pipe(_popen(command.c_str(), "r"), _pclose);
-#else
-    return {};
-#endif
 
     if (!pipe) {
         return {};
@@ -36,6 +31,7 @@ static std::string runCommand(const std::string& command)
     }
     return res;
 }
+#endif
 
 std::string osname()
 {
