@@ -6,7 +6,7 @@
 #include "logger/Timestamp.h"
 
 #include <map>
-#include <__ranges/transform_view.h>
+// #include <__ranges/transform_view.h>
 
 namespace logger
 {
@@ -127,11 +127,13 @@ void LogFileSink::writeHeader(
         { "",                   ""                                                  },
     };
 
-    size_t maxKeyLen = std::ranges::max(infos |
-        std::ranges::views::transform([](auto const& p){
-            return p.first.size();
-        })
-    );
+    size_t maxKeyLen = 0;
+
+    for (auto& [label, value] : infos) {
+        if (label.size() > maxKeyLen) {
+            maxKeyLen = label.size();
+        }
+    }
 
     std::ostringstream header;
 

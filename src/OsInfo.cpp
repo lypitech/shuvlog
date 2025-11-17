@@ -2,13 +2,23 @@
 
 #include <array>
 #include <format>
+#include <memory>
+#include <fstream>
+
+#if defined(__linux__)
+#include <sys/utsname.h>
+#endif
+#if defined(_WIN32)
+#include <windows.h>
+#include <winternl.h>
+#endif
 
 static std::string runCommand(const std::string& command)
 {
     std::array<char, 128> buf{};
     std::string res{};
 #if defined(__APPLE__) || defined(__linux__)
-    const std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
+    const std::unique_ptr<FILE, int(*)(FILE*)> pipe(popen(command.c_str(), "r"), pclose);
 #elif defined(_WIN32)
     const std::unique_ptr<FILE, decltype(&_pclose)> pipe(_popen(command.c_str(), "r"), _pclose);
 #else
@@ -61,11 +71,11 @@ std::string osname()
         DWORD size = sizeof(productName);
 
         if (RegGetValueA(hKey, nullptr, "ProductName",
-                         RRF_RT_REG_SZ, nullptr, productName,
+                         RRF_RT_REG_SZ, nullptr, static_cast<void*>(productName.data()),
                          &size) == ERROR_SUCCESS)
         {
             RegCloseKey(hKey);
-            return std::string(productName);
+            return std::string(productName.data());
         }
         RegCloseKey(hKey);
     }

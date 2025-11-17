@@ -1,6 +1,7 @@
 #ifndef SHOVOLOGGER_BADFILEEXTENSION_H
 #define SHOVOLOGGER_BADFILEEXTENSION_H
 
+#include <algorithm>
 #include <format>
 
 #include "LoggerException.h"
