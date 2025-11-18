@@ -1,4 +1,4 @@
-# Shovologger
+# Shuvlog
 
 This library is a Logger written in C++ with many features, such as multi-threading, levels and more.
 
@@ -8,8 +8,8 @@ This library is a Logger written in C++ with many features, such as multi-thread
 
 1. Clone the repository
 ```shell
-git clone git@github.com:shuvlyy/shovologger.git
-cd shovologger/
+git clone git@github.com:lypitech/shuvlog.git
+cd shuvlog/
 ```
 
 2. Build the project
