@@ -312,7 +312,34 @@ Logger::initialize(
 
 ### 3. Usage
 
+Using the Logger is way easier than setting it up.
+
+To log something, just use the available macros:
+```c++
+LOG_DEBUG("Debug log.");
+LOG_INFO("Info log.");
+LOG_WARN("Warning log.");
+LOG_ERR("Error log.");
+LOG_CRIT("Critical log.");
+LOG_FATAL("Fatal log.");
+```
+
+If you want, you can also manually use the `Logger#log` function. But that's too much writing for nothing.
+
+And Logger does the rest! Enjoy logging! :)
+
+> [!CAUTION]
+> If you try to log something with an uninitialized Logger, an error will be written in the standard error output
+> (`CAUTION: Logger has been used uninitialized. Make sure you call the initialize() function before performing any
+> log.`).
+
+> [!CAUTION]
+> As mentionned earlier, if you try to log something with no Sink attached to the Logger, an error will be written in
+> the standard error output too (`WARNING: Trying to log with no sink.`).
+
 ## Contributing
+
+TODO
 
 ## Made with 💜 by [Lysandre B.](https://github.com/shuvlyy) ・ [![wakatime](https://wakatime.com/badge/user/2f50fe6c-0368-4bef-aa01-3a67193b63f8/project/dab4ab21-69ce-4bde-93c7-43f7ab80c99f.svg)](https://wakatime.com/badge/user/2f50fe6c-0368-4bef-aa01-3a67193b63f8/project/dab4ab21-69ce-4bde-93c7-43f7ab80c99f)
 ###### You can reach me here: [lysandre.boursette@epitech.eu](mailto:lysandre.boursette@epitech.eu)
