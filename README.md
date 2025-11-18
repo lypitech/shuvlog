@@ -38,8 +38,8 @@ Here is a list of the sinks implemented by default:
 
 <a href="sink-console"></a>
 - `ConsoleSink`
-> [!IMPORTANT]
-> Logs that have a level greater than or equal to `kError` will be outputted to the standard error output.
+  > IMPORTANT:  
+  > Logs that have a level greater than or equal to `kError` will be outputted to the standard error output.
 
   __Parameters:__
   None.
@@ -55,8 +55,8 @@ Here is a list of the sinks implemented by default:
 
 <a href="sink-logfile"></a>
 - `LogFileSink`
-> [!IMPORTANT]
-> This kind of Sink should be saved in `.log` files. If it's not the case, a warning will be thrown.
+  > CAUTION:  
+  > This kind of Sink should be saved in `.log` files. If it's not the case, a warning will be thrown.
 
   __Parameters:__
   - Path of the file where the output will be written. (`const std::string&`)
@@ -89,16 +89,16 @@ Here is a list of the sinks implemented by default:
 
 <a href="sink-jsonfile"></a>
 - `JsonFileSink`
-> [!IMPORTANT]
-> This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
+  > CAUTION:  
+  > This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
 
-> [!NOTE]
-> JSON will be properly formatted in the formats below. Note that the Logger will write unformatted JSON (one-lined).
+  > NOTE:  
+  > JSON will be properly formatted in the formats below. Note that the Logger will write unformatted JSON (one-lined).
 
-> [!IMPORTANT]
-> This Sink does not take its assigned settings into account when logging.  
-> That's because JSONs are meant to have everything logged into it, as humans won't read it raw. They will use a
-> dedicated Log viewer.
+  > CAUTION:  
+  > This Sink does not take its assigned settings into account when logging.  
+  > That's because JSONs are meant to have everything logged into it, as humans won't read it raw. They will use a
+  > dedicated Log viewer.
 
   __Parameters:__
   - Path of the file where the output will be written. (`const std::string&`)
@@ -122,8 +122,8 @@ Here is a list of the sinks implemented by default:
   ```
   
   __Log format:__
-> [!NOTE]
-> All logs will be put in the `logs` list in the main JSON object.
+  > NOTE:  
+  > All logs will be put in the `logs` list in the main JSON object.
   ```json
   {
     "timestamp": "2025-11-18 16:59:26.006",
@@ -142,8 +142,8 @@ Here is a list of the sinks implemented by default:
 
 <a href="sink-ndjsonfile"></a>
 - `NdJsonFileSink`
-> [!IMPORTANT]
-> This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
+  > CAUTION:  
+  > This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
 
   This Sink has the same parameters and formats as the [`JsonFileSink`](#sink-jsonfile), but following the JSON
   formatting of [NDJSON](https://docs.mulesoft.com/dataweave/latest/dataweave-formats-ndjson).  
