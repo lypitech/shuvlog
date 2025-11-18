@@ -27,9 +27,9 @@ public:
     void setFlushIntervalMs(int flushIntervalMs) { _flushIntervalMs = flushIntervalMs; }
 
 private:
-    Level _minimumLevel = Level::kInfo;
-    size_t _maxBatchSize = 64;
-    int _flushIntervalMs = 250;
+    Level _minimumLevel;
+    size_t _maxBatchSize;
+    int _flushIntervalMs;
 };
 
 }

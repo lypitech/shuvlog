@@ -66,7 +66,7 @@ void Logger::log(
     }
 
     if (_sinks.empty()) {
-        std::cerr << "CAUTION: Trying to log with no sink."
+        std::cerr << "WARNING: Trying to log with no sink."
                   << std::endl;
         return;
     }

@@ -206,18 +206,111 @@ LOG_DEBUG("ゲンダイ");
 
 ## How to use
 
-[//]: # (*In an example `main&#40;&#41;` function.*)
+Before starting the setup, keep in mind that non-static functions in the `Logger` class must be accessed via the
+`getInstance()` function.
 
-[//]: # ()
-[//]: # (1. Add some Sinks &#40;with the `addSink` function&#41;)
+The only header you will need is `logger/Logger.h`.
 
-[//]: # (```c++)
+### 1. Set up Sinks
 
-[//]: # (Logger::getInstance&#40;&#41;.addSink<logger::ConsoleSink>&#40;&#41;;)
+Before initializing anything, you need to specify to the Logger where the logs will go.  
+Otherwise, they won't go anywhere and the Logger will print an error (`WARNING: Trying to log with no sink.`) each time
+you will log something!
 
-[//]: # (Logger::getInstance&#40;&#41;.addSink<logger::LogFileSink>&#40;"latest.log"&#41;;)
+For that, just call the `Logger#addSink<T>(...)` function.  
+`T` is the Sink class type you want to create  
+and `...` the parameters that the Sink class requires (some requires none).
 
-[//]: # (```)
+Example:
+```c++
+Logger::getInstance().addSink<logger::ConsoleSink>();
+Logger::getInstance().addSink<logger::LogFileSink>("output.log");
+// and so on...
+```
+
+### 2. Initialize the Logger
+
+#### 2.1 Build Info
+
+Remember [the headers of Sinks]()? They include information about how to project has been built. This works thanks
+to the `logger::BuildInfo` class.
+
+```h
+// To save you some reading, this is not the real implementation of the BuildInfo class, but something close.
+// Each field can be accessed through getters (eg. getType, getVersion...).
+// For more information, read the source code.
+struct BuildInfo
+{
+    static BuildInfo unknown();
+    static BuildInfo fromCMake();
+
+    std::string _type;
+    std::string _version;
+    std::string _compiler;
+    std::string _compilerFlags;
+    std::string _buildSystem;
+}
+```
+
+To create an instance of this class, you have two options:
+- Either using the static builder `BuildInfo::fromCMake()`, that retrieves the necessary information from CMake
+  (if properly [configured](#212-cmake-configuration))
+- Or using the static builder `BuildInfo::unknown()`, that returns an instance filled up with "Unknown".
+
+For now, you cannot manually specify your own information. This is being worked on.
+
+##### 2.1.2 CMake configuration
+
+TODO
+
+#### 2.2 Logger settings
+
+Logger have some settings that can be customized.
+
+```h
+// To save you some reading, this is not the real implementation of the logger::Settings class, but something close.
+// Each field can be accessed and modified through getters and setters (eg. getMinimumLevel, setFlushIntervalMs...).
+// For more information, read the source code.
+struct Settings
+{
+    Level _minimumLevel = Level::kInfo;
+    size_t _maxBatchSize = 64;
+    int _flushIntervalMs = 250;
+};
+```
+
+The most important one is the minimum level required for a log to be logged (`_minimumLevel`).
+Default is `Level::kInfo`, but you can set something else.
+
+As this Logger is multithreaded, logs are registered into a queue before being flushed. Every `_flushIntervalMs`
+milliseconds, the worker removes `_maxBatchSize` logs from the queue and processes them (formatting and flushing).
+
+We recommend you to leave those two variables at their default values.  
+If you encounter some synchronization issues with the Logger, you can try to set `_maxBatchSize` to `1` and
+`_flushIntervalMs` to `0`.
+
+#### 2.3 Initialization
+
+Now is the time to initialize the Logger, with the function `Logger::initialize`.  
+Variables content will be placeholders for demonstration purposes ; you are of course free to use your own.
+
+Example:
+```c++
+constexpr std::string projectName("R-Type Server");
+const auto buildInfo = logger::BuildInfo::fromCMake();
+const auto loggerSettings = logger::Settings(logger::Level::kDebug);
+
+Logger::initialize(
+    projectName,
+    argc, argv,
+    buildInfo,
+    loggerSettings
+);
+
+// You can now properly use the logger.
+```
+
+### 3. Usage
 
 ## Contributing
 
