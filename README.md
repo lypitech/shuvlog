@@ -259,9 +259,23 @@ To create an instance of this class, you have two options:
 
 For now, you cannot manually specify your own information. This is being worked on.
 
-##### 2.1.2 CMake configuration
+##### 2.1.1 CMake configuration
 
-TODO
+As shown previously, a `BuildInfo` object can be populated using information provided by `CMake`.  
+To enable this, you need to add a small configuration snippet to your parent CMake project.
+
+Simply include the following lines:
+
+```cmake
+target_compile_definitions(project_name INTERFACE
+    SHLG_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
+    SHLG_BUILD_VERSION="${PROJECT_VERSION}"
+    SHLG_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}"
+    SHLG_COMPILER_VERSION="${CMAKE_CXX_COMPILER_VERSION}"
+    SHLG_COMPILER_FLAGS="${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE}}"
+    SHLG_BUILD_SYSTEM="CMake ${CMAKE_VERSION}"
+)
+```
 
 #### 2.2 Logger settings
 
