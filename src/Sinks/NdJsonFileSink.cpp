@@ -70,7 +70,7 @@ void NdJsonFileSink::writeHeader(
 
     body << R"("osName":")" << osname() << "\",";
     body << R"("kernelVersion":")" << kernelver() << "\",";
-    body << R"("compilerName":")" << buildInfo.getCompiler() << "\",";
+    body << R"("compiler":")" << buildInfo.getCompiler() << "\",";
     body << R"("compilationFlags":")" << buildInfo.getCompilerFlags() << "\",";
     body << R"("buildSystem":")" << buildInfo.getBuildSystem() << "\"";
 

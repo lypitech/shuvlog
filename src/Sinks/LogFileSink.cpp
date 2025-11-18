@@ -6,7 +6,6 @@
 #include "logger/Timestamp.h"
 
 #include <map>
-// #include <__ranges/transform_view.h>
 
 namespace logger
 {
