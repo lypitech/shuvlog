@@ -29,83 +29,80 @@ Library file will be located in the `build/` folder.
 
 Logs can be outputted anywhere you want, thanks to Sinks.
 
-Sinks, by default, accepts an optional [sink::Settings](#sink-settings) structure as the last parameter.
+Sinks, by default, accepts an optional [sink::Settings](#settings) structure as the last parameter.
 
 Here is a list of the sinks implemented by default:
 
 > [!IMPORTANT]
-> In formats, everything that is under curly bracket (`{}`) is [configurable](#sink-settings) and so, optional.
+> In formats, everything that is under curly bracket (`{}`) is [configurable](#settings) and so, optional.
 
-<a href="sink-console"></a>
-- `ConsoleSink`
-  > IMPORTANT:  
-  > Logs that have a level greater than or equal to `kError` will be outputted to the standard error output.
+#### `ConsoleSink`
+> [!IMPORTANT]  
+> Logs that have a level greater than or equal to `kError` will be outputted to the standard error output.
 
-  __Parameters:__
-  None.
+__Parameters:__
+None.
 
-  __Header format:__
-  None.
+__Header format:__
+None.
 
-  __Log format:__
-  ```
-  {{date} time{:milliseconds}} {[{thread_name} {(thread_id)}]} level: message {(source{:line}{:column})}
-  2025-11-18 16:59:26.006 [MainThread (0x1eda26080)] DEBUG: レイテンシーガール (src/main.cpp:3:16)
-  ```
+__Log format:__
+```
+{{date} time{:milliseconds}} {[{thread_name} {(thread_id)}]} level: message {(source{:line}{:column})}
+2025-11-18 16:59:26.006 [MainThread (0x1eda26080)] DEBUG: レイテンシーガール (src/main.cpp:3:16)
+```
 
-<a href="sink-logfile"></a>
-- `LogFileSink`
-  > CAUTION:  
-  > This kind of Sink should be saved in `.log` files. If it's not the case, a warning will be thrown.
+#### `LogFileSink`
+> [!CAUTION]  
+> This kind of Sink should be saved in `.log` files. If it's not the case, a warning will be thrown.
 
-  __Parameters:__
-  - Path of the file where the output will be written. (`const std::string&`)
+__Parameters:__
+- Path of the file where the output will be written. (`const std::string&`)
 
-  __Header format:__
-  ```
-  /*************************************************
-  |
-  |   Project            :  R-Type Server (project_name)
-  |   Version            :  1.0-alpha (project_version)
-  |   Build type         :  Debug (build_type)
-  |   Minimum level      :  DEBUG (logger_minimum_level)
-  |
-  |   Command            :  ./r-type_server -p 4242 (command_with_arguments)
-  |   Start time         :  2025-11-18 16:59:26.006 (program_start_time)
-  |
-  |   OS                 :  macOS 26.1 (build 25B78) (os_name & kernel_version)
-  |   Compiler           :  AppleClang 17.0.0.17000404 (compiler & compiler_version)
-  |   Compilation flags  :  None (compilation_flags)
-  |   Build system       :  CMake 4.0.2 (build_system & build_system_version)
-  |
-  \*************************************************
-  ```
+__Header format:__
+```
+/*************************************************
+|
+|   Project            :  R-Type Server (project_name)
+|   Version            :  1.0-alpha (project_version)
+|   Build type         :  Debug (build_type)
+|   Minimum level      :  DEBUG (logger_minimum_level)
+|
+|   Command            :  ./r-type_server -p 4242 (command_with_arguments)
+|   Start time         :  2025-11-18 16:59:26.006 (program_start_time)
+|
+|   OS                 :  macOS 26.1 (build 25B78) (os_name & kernel_version)
+|   Compiler           :  AppleClang 17.0.0.17000404 (compiler & compiler_version)
+|   Compilation flags  :  None (compilation_flags)
+|   Build system       :  CMake 4.0.2 (build_system & build_system_version)
+|
+\*************************************************
+```
 
-  __Log format:__
-  ```
-  {{date} time{:milliseconds}} {[{thread_name} {(thread_id)}]} level: message {(source{:line}{:column})}
-  2025-11-18 16:57:25 [MainThread (0x1eda26080)] DEBUG: インフレイション！！ (src/main.cpp:3:16)
-  ```
+__Log format:__
+```
+{{date} time{:milliseconds}} {[{thread_name} {(thread_id)}]} level: message {(source{:line}{:column})}
+2025-11-18 16:57:25 [MainThread (0x1eda26080)] DEBUG: インフレイション！！ (src/main.cpp:3:16)
+```
 
-<a href="sink-jsonfile"></a>
-- `JsonFileSink`
-  > CAUTION:  
-  > This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
+#### `JsonFileSink`
+> [!CAUTION]  
+> This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
 
-  > NOTE:  
-  > JSON will be properly formatted in the formats below. Note that the Logger will write unformatted JSON (one-lined).
+> [!NOTE]  
+> JSON will be properly formatted in the formats below. Note that the Logger will write unformatted JSON (one-lined).
 
-  > CAUTION:  
-  > This Sink does not take its assigned settings into account when logging.  
-  > That's because JSONs are meant to have everything logged into it, as humans won't read it raw. They will use a
-  > dedicated Log viewer.
+> [!CAUTION]  
+> This Sink does not take its assigned settings into account when logging.  
+> That's because JSONs are meant to have everything logged into it, as humans won't read it raw. They will use a
+> dedicated Log viewer.
 
-  __Parameters:__
-  - Path of the file where the output will be written. (`const std::string&`)
+__Parameters:__
+- Path of the file where the output will be written. (`const std::string&`)
 
-  __Header format:__
-  ```json
-  {
+__Header format:__
+```json
+{
     "projectName": "R-Type Server", // project_name
     "version": "1.0-alpha", // project_version
     "buildType": "Debug", // build_type
@@ -118,14 +115,14 @@ Here is a list of the sinks implemented by default:
     "compilationFlags": "None", // compilation_flags
     "buildSystem": "CMake 4.0.2", // build_system & build_system_version
     "logs": []
-  }
-  ```
-  
-  __Log format:__
-  > NOTE:  
-  > All logs will be put in the `logs` list in the main JSON object.
-  ```json
-  {
+}
+```
+
+__Log format:__
+> [!NOTE]  
+> All logs will be put in the `logs` list in the main JSON object.
+```json
+{
     "timestamp": "2025-11-18 16:59:26.006",
     "type": "DEBUG",
     "thread": {
@@ -137,19 +134,17 @@ Here is a list of the sinks implemented by default:
     "line": 3,
     "column": 16,
     "message": "成仏させてよ"
-  }
-  ```
+}
+```
 
-<a href="sink-ndjsonfile"></a>
-- `NdJsonFileSink`
-  > CAUTION:  
-  > This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
+#### `NdJsonFileSink`
+> [!CAUTION]  
+> This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
 
-  This Sink has the same parameters and formats as the [`JsonFileSink`](#sink-jsonfile), but following the JSON
-  formatting of [NDJSON](https://docs.mulesoft.com/dataweave/latest/dataweave-formats-ndjson).  
+This Sink has the same parameters and formats as the [`JsonFileSink`](#sink-jsonfile), but following the JSON
+formatting of [NDJSON](https://docs.mulesoft.com/dataweave/latest/dataweave-formats-ndjson).  
 
 
-<a href="sink-settings"></a>
 #### Settings
 
 Sinks are configurable, thanks to the `sink::Settings` structure.
