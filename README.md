@@ -1,4 +1,4 @@
-# Shuvlog
+# 🗒️ Shuvlog
 
 This library is a Logger written in C++ with many features, such as multi-threading, levels and more.
 
@@ -20,6 +20,8 @@ cmake -B build/
 # Compile the project
 cmake --build build/
 ```
+
+If you want the build to be faster (to use all of your CPU cores), simply add `--parallel` to the options!
 
 Library file will be located in the `build/` folder.  
 If you want to build the project in another folder, simply replace `build/` with the folder you want the library to be
@@ -393,6 +395,8 @@ you can simply call the `Logger#shutdown()` function.
 ## Contributing
 
 TODO
+
+---
 
 ## Made with 💜 by [Lysandre B.](https://github.com/shuvlyy) ・ [![wakatime](https://wakatime.com/badge/user/2f50fe6c-0368-4bef-aa01-3a67193b63f8/project/dab4ab21-69ce-4bde-93c7-43f7ab80c99f.svg)](https://wakatime.com/badge/user/2f50fe6c-0368-4bef-aa01-3a67193b63f8/project/dab4ab21-69ce-4bde-93c7-43f7ab80c99f)
 ###### You can reach me here: [lysandre.boursette@epitech.eu](mailto:lysandre.boursette@epitech.eu)
