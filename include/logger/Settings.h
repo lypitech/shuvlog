@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_SETTINGS_H
-#define SHOVOLOGGER_SETTINGS_H
+#ifndef SHUVLOG_SETTINGS_H
+#define SHUVLOG_SETTINGS_H
 
 #include "Level.h"
 
@@ -34,4 +34,4 @@ private:
 
 }
 
-#endif //SHOVOLOGGER_SETTINGS_H
+#endif //SHUVLOG_SETTINGS_H

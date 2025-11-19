@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_CONSOLESINK_H
-#define SHOVOLOGGER_CONSOLESINK_H
+#ifndef SHUVLOG_CONSOLESINK_H
+#define SHUVLOG_CONSOLESINK_H
 
 #include "logger/Sink.h"
 
@@ -25,4 +25,4 @@ public:
 
 }
 
-#endif //SHOVOLOGGER_CONSOLESINK_H
+#endif //SHUVLOG_CONSOLESINK_H

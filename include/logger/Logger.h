@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_LOGGER_H
-#define SHOVOLOGGER_LOGGER_H
+#ifndef SHUVLOG_LOGGER_H
+#define SHUVLOG_LOGGER_H
 
 #include <iostream>
 #include <fstream>
@@ -108,4 +108,4 @@ private:
     static std::once_flag initFlag;
 };
 
-#endif //SHOVOLOGGER_LOGGER_H
+#endif //SHUVLOG_LOGGER_H

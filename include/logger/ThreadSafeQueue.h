@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_THREADSAFEQUEUE_H
-#define SHOVOLOGGER_THREADSAFEQUEUE_H
+#ifndef SHUVLOG_THREADSAFEQUEUE_H
+#define SHUVLOG_THREADSAFEQUEUE_H
 
 #include <cstddef>
 #include <mutex>
@@ -82,4 +82,4 @@ private:
     std::queue<T> _queue;
 };
 
-#endif //SHOVOLOGGER_THREADSAFEQUEUE_H
+#endif //SHUVLOG_THREADSAFEQUEUE_H

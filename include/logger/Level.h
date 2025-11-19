@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_LEVEL_H
-#define SHOVOLOGGER_LEVEL_H
+#ifndef SHUVLOG_LEVEL_H
+#define SHUVLOG_LEVEL_H
 
 #include <cstdint>
 
@@ -18,4 +18,4 @@ enum class Level : uint8_t
 
 }
 
-#endif //SHOVOLOGGER_LEVEL_H
+#endif //SHUVLOG_LEVEL_H

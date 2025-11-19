@@ -1,9 +1,9 @@
-#ifndef SHOVOLOGGER_OSINFO_H
-#define SHOVOLOGGER_OSINFO_H
+#ifndef SHUVLOG_OSINFO_H
+#define SHUVLOG_OSINFO_H
 
 #include <string>
 
 std::string osname();
 std::string kernelver();
 
-#endif //SHOVOLOGGER_OSINFO_H
+#endif //SHUVLOG_OSINFO_H

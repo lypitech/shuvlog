@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_SINK_H
-#define SHOVOLOGGER_SINK_H
+#ifndef SHUVLOG_SINK_H
+#define SHUVLOG_SINK_H
 
 #include <string>
 
@@ -53,4 +53,4 @@ protected:
 
 }
 
-#endif //SHOVOLOGGER_SINK_H
+#endif //SHUVLOG_SINK_H

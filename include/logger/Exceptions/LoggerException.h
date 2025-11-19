@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_LOGGEREXCEPTION_H
-#define SHOVOLOGGER_LOGGEREXCEPTION_H
+#ifndef SHUVLOG_LOGGEREXCEPTION_H
+#define SHUVLOG_LOGGEREXCEPTION_H
 
 #include <iostream>
 #include <stdexcept>
@@ -25,4 +25,4 @@ inline std::ostream &operator<<(
 
 }
 
-#endif //SHOVOLOGGER_LOGGEREXCEPTION_H
+#endif //SHUVLOG_LOGGEREXCEPTION_H

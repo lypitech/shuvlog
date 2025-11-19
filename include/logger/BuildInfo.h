@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_BUILDINFO_H
-#define SHOVOLOGGER_BUILDINFO_H
+#ifndef SHUVLOG_BUILDINFO_H
+#define SHUVLOG_BUILDINFO_H
 
 #include <string>
 
@@ -56,4 +56,4 @@ private:
 
 }
 
-#endif //SHOVOLOGGER_BUILDINFO_H
+#endif //SHUVLOG_BUILDINFO_H

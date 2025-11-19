@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_LOGFILESINK_H
-#define SHOVOLOGGER_LOGFILESINK_H
+#ifndef SHUVLOG_LOGFILESINK_H
+#define SHUVLOG_LOGFILESINK_H
 
 #include <fstream>
 
@@ -33,4 +33,4 @@ private:
 
 }
 
-#endif //SHOVOLOGGER_LOGFILESINK_H
+#endif //SHUVLOG_LOGFILESINK_H

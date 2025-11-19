@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_LOG_H
-#define SHOVOLOGGER_LOG_H
+#ifndef SHUVLOG_LOG_H
+#define SHUVLOG_LOG_H
 
 #include <thread>
 #include <chrono>
@@ -32,4 +32,4 @@ private:
     std::chrono::time_point<std::chrono::system_clock> _timestamp;
 };
 
-#endif //SHOVOLOGGER_LOG_H
+#endif //SHUVLOG_LOG_H

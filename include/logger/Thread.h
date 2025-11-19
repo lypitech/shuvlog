@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_THREAD_H
-#define SHOVOLOGGER_THREAD_H
+#ifndef SHUVLOG_THREAD_H
+#define SHUVLOG_THREAD_H
 
 namespace logger
 {
@@ -11,4 +11,4 @@ namespace logger
 
 }
 
-#endif //SHOVOLOGGER_THREAD_H
+#endif //SHUVLOG_THREAD_H

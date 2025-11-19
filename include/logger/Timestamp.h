@@ -1,5 +1,5 @@
-#ifndef SHOVOLOGGER_TIMESTAMP_H
-#define SHOVOLOGGER_TIMESTAMP_H
+#ifndef SHUVLOG_TIMESTAMP_H
+#define SHUVLOG_TIMESTAMP_H
 
 #include <chrono>
 
@@ -13,4 +13,4 @@ std::string formatTimestamp(
     bool forFilename = false
 );
 
-#endif //SHOVOLOGGER_TIMESTAMP_H
+#endif //SHUVLOG_TIMESTAMP_H
