@@ -20,15 +20,6 @@ else()
     add_compile_options(-Wall -Wextra -Werror -pedantic)
 endif()
 
-# ==============================================================================
-#  Multithreaded builds
-# ==============================================================================
-if(NOT DEFINED CMAKE_BUILD_PARALLEL_LEVEL)
-    include(ProcessorCount)
-    ProcessorCount(N)
-    set(CMAKE_BUILD_PARALLEL_LEVEL ${N})
-endif()
-
 # ============================================================
 #  Fake parent
 # ============================================================
