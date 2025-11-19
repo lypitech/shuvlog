@@ -36,6 +36,8 @@ Here is a list of the sinks implemented by default:
 > [!IMPORTANT]
 > In formats, everything that is under curly bracket (`{}`) is [configurable](#settings) and so, optional.
 
+---
+
 #### `ConsoleSink`
 > [!IMPORTANT]  
 > Logs that have a level greater than or equal to `kError` will be outputted to the standard error output.
@@ -51,6 +53,8 @@ __Log format:__
 {{date} time{:milliseconds}} {[{thread_name} {(thread_id)}]} level: message {(source{:line}{:column})}
 2025-11-18 16:59:26.006 [MainThread (0x1eda26080)] DEBUG: レイテンシーガール (src/main.cpp:3:16)
 ```
+
+---
 
 #### `LogFileSink`
 > [!CAUTION]  
@@ -85,7 +89,10 @@ __Log format:__
 2025-11-18 16:57:25 [MainThread (0x1eda26080)] DEBUG: インフレイション！！ (src/main.cpp:3:16)
 ```
 
+---
+
 #### `JsonFileSink`
+
 > [!CAUTION]  
 > This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
 
@@ -137,6 +144,8 @@ __Log format:__
 }
 ```
 
+---
+
 #### `NdJsonFileSink`
 > [!CAUTION]  
 > This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
@@ -144,6 +153,7 @@ __Log format:__
 This Sink has the same parameters and formats as the [`JsonFileSink`](#sink-jsonfile), but following the JSON
 formatting of [NDJSON](https://docs.mulesoft.com/dataweave/latest/dataweave-formats-ndjson).  
 
+---
 
 #### Settings
 
