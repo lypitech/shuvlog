@@ -114,7 +114,7 @@ Here is a list of the sinks implemented by default:
     "startTime": "2025-11-18 16:59:26.006", // program_start_time
     "osName": "macOS 26.1", // os_name
     "kernelVersion": "(build 25B78)", // kernel_version
-    "compilerName": "AppleClang 17.0.0.17000404", // compiler & compiler_version
+    "compiler": "AppleClang 17.0.0.17000404", // compiler & compiler_version
     "compilationFlags": "None", // compilation_flags
     "buildSystem": "CMake 4.0.2", // build_system & build_system_version
     "logs": []
@@ -232,7 +232,7 @@ Logger::getInstance().addSink<logger::LogFileSink>("output.log");
 
 #### 2.1 Build Info
 
-Remember [the headers of Sinks]()? They include information about how to project has been built. This works thanks
+Remember the [headers of Sinks]()? They include information about how the project has been built. This works thanks
 to the `logger::BuildInfo` class.
 
 ```h
@@ -254,7 +254,7 @@ struct BuildInfo
 
 To create an instance of this class, you have two options:
 - Either using the static builder `BuildInfo::fromCMake()`, that retrieves the necessary information from CMake
-  (if properly [configured](#212-cmake-configuration))
+  (if properly [configured](#211-cmake-configuration))
 - Or using the static builder `BuildInfo::unknown()`, that returns an instance filled up with "Unknown".
 
 For now, you cannot manually specify your own information. This is being worked on.
@@ -341,6 +341,9 @@ LOG_FATAL("Fatal log.");
 If you want, you can also manually use the `Logger#log` function. But that's too much writing for nothing.
 
 And Logger does the rest! Enjoy logging! :)
+
+Finally, the Logger shuts down by itself when destroyed. That being said, if you want to manually shutdown the Logger,
+you can simply call the `Logger#shutdown()` function.
 
 > [!CAUTION]
 > If you try to log something with an uninitialized Logger, an error will be written in the standard error output
