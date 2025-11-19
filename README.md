@@ -4,7 +4,7 @@ This library is a Logger written in C++ with many features, such as multi-thread
 
 ## Getting started
 
-### Installation
+### 1. Build
 
 1. Clone the repository
 ```shell
@@ -21,11 +21,42 @@ cmake -B build/
 cmake --build build/
 ```
 
-Library file will be located in the `build/` folder.
+Library file will be located in the `build/` folder.  
+If you want to build the project in another folder, simply replace `build/` with the folder you want the library to be
+built in.
+Make sure the folder you specify is empty!
+
+### 2. Link
+
+#### 2.1 CMake
+
+If you use CMake, using this library in your project is really simple.
+
+Simply include the following lines to your `CMakeLists.txt`:
+```cmake
+add_subdirectory(<library file path>)
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+    <library file path>/include
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    shuvlog
+)
+```
+
+#### 2.2 Manual linking
+
+If you don't use a proper build system, you can still manually link the library to your project when compiling it.
+
+Simply include the following to your compilation flags:
+```
+-L <library file path> -l shuvlog
+```
 
 ## How it works
 
-### Sink
+### 1. Sink
 
 Logs can be outputted anywhere you want, thanks to Sinks.
 
@@ -38,7 +69,7 @@ Here is a list of the sinks implemented by default:
 
 ---
 
-#### `ConsoleSink`
+#### 1.1 `ConsoleSink`
 > [!IMPORTANT]  
 > Logs that have a level greater than or equal to `kError` will be outputted to the standard error output.
 
@@ -56,7 +87,7 @@ __Log format:__
 
 ---
 
-#### `LogFileSink`
+#### 1.2 `LogFileSink`
 > [!CAUTION]  
 > This kind of Sink should be saved in `.log` files. If it's not the case, a warning will be thrown.
 
@@ -91,7 +122,7 @@ __Log format:__
 
 ---
 
-#### `JsonFileSink`
+#### 1.3 `JsonFileSink`
 
 > [!CAUTION]  
 > This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
@@ -146,16 +177,16 @@ __Log format:__
 
 ---
 
-#### `NdJsonFileSink`
+#### 1.4 `NdJsonFileSink`
 > [!CAUTION]  
 > This kind of Sink should be saved in `.json` files. If it's not the case, a warning will be thrown.
 
-This Sink has the same parameters and formats as the [`JsonFileSink`](#sink-jsonfile), but following the JSON
+This Sink has the same parameters and formats as the [`JsonFileSink`](#13-jsonfilesink), but following the JSON
 formatting of [NDJSON](https://docs.mulesoft.com/dataweave/latest/dataweave-formats-ndjson).  
 
 ---
 
-#### Settings
+#### 1.5 Settings
 
 Sinks are configurable, thanks to the `sink::Settings` structure.
 
