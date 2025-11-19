@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(shovologger
+project(shuvlog
     VERSION 1.0.0
     DESCRIPTION "Leveled multi-threaded Logger library"
     HOMEPAGE_URL "https://github.com/shuvlyy/shovologger"
@@ -46,7 +46,7 @@ target_compile_definitions(shlg_parent INTERFACE
 # ============================================================
 #  Library target
 # ============================================================
-add_library(shovologger STATIC
+add_library(${PROJECT_NAME} STATIC
     src/Logger.cpp
     src/OsInfo.cpp
     src/Log.cpp
@@ -59,15 +59,15 @@ add_library(shovologger STATIC
     src/Sinks/NdJsonFileSink.cpp
 )
 
-target_link_libraries(shovologger PUBLIC shlg_parent)
+target_link_libraries(${PROJECT_NAME} PUBLIC shlg_parent)
 
 # Public headers
-target_include_directories(shovologger PUBLIC
+target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-set_target_properties(shovologger PROPERTIES
-    OUTPUT_NAME "shovologger"
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    OUTPUT_NAME ${PROJECT_NAME}
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 )
 
@@ -76,12 +76,12 @@ set_target_properties(shovologger PROPERTIES
 # ============================================================
 enable_testing()
 
-add_executable(test_shovologger tests/Tester3000.cpp)
+add_executable(test_shuvlog tests/Tester3000.cpp)
 
-target_link_libraries(test_shovologger PRIVATE shovologger)
+target_link_libraries(test_shuvlog PRIVATE shuvlog)
 
-target_include_directories(test_shovologger PRIVATE
+target_include_directories(test_shuvlog PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-add_test(NAME LoggerTest COMMAND test_shovologger)
+add_test(NAME LoggerTest COMMAND test_shuvlog)
