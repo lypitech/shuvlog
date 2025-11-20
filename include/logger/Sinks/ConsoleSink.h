@@ -13,9 +13,9 @@ public:
 
     void write(const Log& log) override;
     void writeHeader(
-        const std::string &projectName,
+        const std::string& projectName,
         int argc,
-        const char *argv[],
+        const char* argv[],
         const BuildInfo& buildInfo,
         const Settings& settings
     ) override;

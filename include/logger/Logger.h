@@ -8,12 +8,14 @@
 #include <thread>
 
 #include "BuildInfo.h"
+#include "FileSink.h"
 #include "Exceptions/LoggerException.h"
 #include "Level.h"
 #include "Log.h"
 #include "Settings.h"
 #include "Sink.h"
 #include "ThreadSafeQueue.h"
+#include "Exceptions/DuplicateSink.h"
 #include "Sinks/ConsoleSink.h"
 
 #define LOG_DEBUG(s)    Logger::getInstance().log(s, logger::Level::kDebug)
@@ -49,23 +51,30 @@ public:
             "T must inherit from logger::Sink."
         );
 
-        constexpr bool isConsoleSink = std::is_same_v<T, logger::ConsoleSink>;
-
-        // if user wants to add a second console sink
-        if (isConsoleSink && _hasConsoleSink) {
-            const std::string error("Only one console sink can be added.");
-
-            if (_isInitialized && !_sinks.empty()) {
-                LOG_WARN(error);
-            } else {
-                std::cerr << "WARNING: " << error << std::endl;
-            }
-            return;
-        }
-
         try {
-            auto sink = std::make_unique<T>(std::forward<Args>(args)...);
+            constexpr bool isConsoleSink = std::is_same_v<T, logger::ConsoleSink>;
+
+            if (isConsoleSink && _hasConsoleSink) {
+                throw logger::exception::DuplicateSink("CONSOLE");
+            }
+
+            auto sink = std::make_shared<T>(std::forward<Args>(args)...);
             std::lock_guard lock(_sinkMutex);
+
+            if constexpr (std::is_base_of_v<logger::FileSink, T>) {
+                auto newFilepath = sink->getAbsoluteFilepath();
+
+                for (const auto& s : _sinks) {
+                    if (const auto fileSink = std::dynamic_pointer_cast<logger::FileSink>(s)) {
+                        const std::string sinkFilepath = fileSink->getAbsoluteFilepath();
+                        if (sinkFilepath != newFilepath) {
+                            continue;
+                        }
+
+                        throw logger::exception::DuplicateSink(sinkFilepath);
+                    }
+                }
+            }
 
             _sinks.push_back(std::move(sink));
 
