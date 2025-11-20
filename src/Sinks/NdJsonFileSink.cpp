@@ -8,21 +8,6 @@
 namespace logger
 {
 
-NdJsonFileSink::NdJsonFileSink(
-    const std::string &filepath,
-    sink::Settings settings
-)
-    : Sink(settings)
-    , _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
-{
-    if (!_file.is_open()) {
-        throw exception::CouldNotOpenFile(filepath);
-    }
-    if (!filepath.ends_with(".ndjson")) {
-        throw exception::BadFileExtension("NDJSON");
-    }
-}
-
 static std::string formatLog(const Log& log)
 {
     std::ostringstream oss;
@@ -46,7 +31,7 @@ void NdJsonFileSink::write(const Log& log)
 }
 
 void NdJsonFileSink::writeHeader(
-    const std::string &projectName,
+    const std::string& projectName,
     const int argc,
     const char* argv[],
     const BuildInfo& buildInfo,

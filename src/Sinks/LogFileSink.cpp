@@ -10,21 +10,6 @@
 namespace logger
 {
 
-LogFileSink::LogFileSink(
-    const std::string& filepath,
-    sink::Settings settings
-)
-    : Sink(settings)
-    , _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
-{
-    if (!_file.is_open()) {
-        throw exception::CouldNotOpenFile(filepath);
-    }
-    if (!filepath.ends_with(".log")) {
-        throw exception::BadFileExtension("Log");
-    }
-}
-
 static std::string formatLog(
     const Log& log,
     const sink::Settings& settings
