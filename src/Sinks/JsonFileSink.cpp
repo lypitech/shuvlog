@@ -8,21 +8,6 @@
 namespace logger
 {
 
-JsonFileSink::JsonFileSink(
-    const std::string &filepath,
-    sink::Settings settings
-)
-    : Sink(settings)
-    , _file(filepath, std::ios::in | std::ios::out | std::ios::trunc)
-{
-    if (!_file.is_open()) {
-        throw exception::CouldNotOpenFile(filepath);
-    }
-    if (!filepath.ends_with(".json")) {
-        throw exception::BadFileExtension("JSON");
-    }
-}
-
 static std::string formatLog(const Log& log)
 {
     std::ostringstream oss;
@@ -54,7 +39,7 @@ void JsonFileSink::write(const Log& log)
 }
 
 void JsonFileSink::writeHeader(
-    const std::string &projectName,
+    const std::string& projectName,
     const int argc,
     const char* argv[],
     const BuildInfo& buildInfo,

@@ -43,6 +43,7 @@ add_library(${PROJECT_NAME} STATIC
     src/Log.cpp
     src/Timestamp.cpp
     src/BuildInfo.cpp
+    src/FileSink.cpp
 
     src/Sinks/ConsoleSink.cpp
     src/Sinks/LogFileSink.cpp
