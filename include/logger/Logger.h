@@ -18,60 +18,13 @@
 #include "Exceptions/DuplicateSink.h"
 #include "Sinks/ConsoleSink.h"
 
-// 16 args to be good for a good time. To refactor if ppl need more args!
-#define LOG_GET_MACRO(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, NAME, ...) NAME
-
-#define LOG_DEBUG(...) LOG_GET_MACRO(__VA_ARGS__, \
-    LOG_DEBUG_N, LOG_DEBUG_N, LOG_DEBUG_N, LOG_DEBUG_N, \
-    LOG_DEBUG_N, LOG_DEBUG_N, LOG_DEBUG_N, LOG_DEBUG_N, \
-    LOG_DEBUG_N, LOG_DEBUG_N, LOG_DEBUG_N, LOG_DEBUG_N, \
-    LOG_DEBUG_N, LOG_DEBUG_N, LOG_DEBUG_N, LOG_DEBUG_1)(__VA_ARGS__)
-
-#define LOG_INFO(...) LOG_GET_MACRO(__VA_ARGS__, \
-    LOG_INFO_N, LOG_INFO_N, LOG_INFO_N, LOG_INFO_N, \
-    LOG_INFO_N, LOG_INFO_N, LOG_INFO_N, LOG_INFO_N, \
-    LOG_INFO_N, LOG_INFO_N, LOG_INFO_N, LOG_INFO_N, \
-    LOG_INFO_N, LOG_INFO_N, LOG_INFO_N, LOG_INFO_1)(__VA_ARGS__)
-
-#define LOG_ERR(...) LOG_GET_MACRO(__VA_ARGS__, \
-    LOG_ERR_N, LOG_ERR_N, LOG_ERR_N, LOG_ERR_N, \
-    LOG_ERR_N, LOG_ERR_N, LOG_ERR_N, LOG_ERR_N, \
-    LOG_ERR_N, LOG_ERR_N, LOG_ERR_N, LOG_ERR_N, \
-    LOG_ERR_N, LOG_ERR_N, LOG_ERR_N, LOG_ERR_1)(__VA_ARGS__)
-
-#define LOG_WARN(...) LOG_GET_MACRO(__VA_ARGS__, \
-    LOG_WARN_N, LOG_WARN_N, LOG_WARN_N, LOG_WARN_N, \
-    LOG_WARN_N, LOG_WARN_N, LOG_WARN_N, LOG_WARN_N, \
-    LOG_WARN_N, LOG_WARN_N, LOG_WARN_N, LOG_WARN_N, \
-    LOG_WARN_N, LOG_WARN_N, LOG_WARN_N, LOG_WARN_1)(__VA_ARGS__)
-
-#define LOG_CRIT(...) LOG_GET_MACRO(__VA_ARGS__, \
-    LOG_CRIT_N, LOG_CRIT_N, LOG_CRIT_N, LOG_CRIT_N, \
-    LOG_CRIT_N, LOG_CRIT_N, LOG_CRIT_N, LOG_CRIT_N, \
-    LOG_CRIT_N, LOG_CRIT_N, LOG_CRIT_N, LOG_CRIT_N, \
-    LOG_CRIT_N, LOG_CRIT_N, LOG_CRIT_N, LOG_CRIT_1)(__VA_ARGS__)
-
-#define LOG_FATAL(...) LOG_GET_MACRO(__VA_ARGS__, \
-    LOG_FATAL_N, LOG_FATAL_N, LOG_FATAL_N, LOG_FATAL_N, \
-    LOG_FATAL_N, LOG_FATAL_N, LOG_FATAL_N, LOG_FATAL_N, \
-    LOG_FATAL_N, LOG_FATAL_N, LOG_FATAL_N, LOG_FATAL_N, \
-    LOG_FATAL_N, LOG_FATAL_N, LOG_FATAL_N, LOG_FATAL_1)(__VA_ARGS__)
-
-// single argument versions (no formatting)
-#define LOG_DEBUG_1(msg) Logger::getInstance().log(logger::Level::kDebug, std::string_view{msg})
-#define LOG_INFO_1(msg)  Logger::getInstance().log(logger::Level::kInfo, std::string_view{msg})
-#define LOG_ERR_1(msg)   Logger::getInstance().log(logger::Level::kError, std::string_view{msg})
-#define LOG_WARN_1(msg)  Logger::getInstance().log(logger::Level::kWarning, std::string_view{msg})
-#define LOG_CRIT_1(msg)  Logger::getInstance().log(logger::Level::kCritical, std::string_view{msg})
-#define LOG_FATAL_1(msg) Logger::getInstance().log(logger::Level::kFatal, std::string_view{msg})
-
-// multiple argument versions (with formatting)
-#define LOG_DEBUG_N(fmt, ...) Logger::getInstance().log(logger::Level::kDebug, std::source_location::current(), fmt, __VA_ARGS__)
-#define LOG_INFO_N(fmt, ...)  Logger::getInstance().log(logger::Level::kInfo, std::source_location::current(), fmt, __VA_ARGS__)
-#define LOG_ERR_N(fmt, ...)   Logger::getInstance().log(logger::Level::kError, std::source_location::current(), fmt, __VA_ARGS__)
-#define LOG_WARN_N(fmt, ...)  Logger::getInstance().log(logger::Level::kWarning, std::source_location::current(), fmt, __VA_ARGS__)
-#define LOG_CRIT_N(fmt, ...)  Logger::getInstance().log(logger::Level::kCritical, std::source_location::current(), fmt, __VA_ARGS__)
-#define LOG_FATAL_N(fmt, ...) Logger::getInstance().log(logger::Level::kFatal, std::source_location::current(), fmt, __VA_ARGS__)
+#define CUR_SOURCE      std::source_location::current()
+#define LOG_DEBUG(...)  Logger::getInstance().log(logger::Level::kDebug,    CUR_SOURCE, __VA_ARGS__)
+#define LOG_INFO(...)   Logger::getInstance().log(logger::Level::kInfo,     CUR_SOURCE, __VA_ARGS__)
+#define LOG_WARN(...)   Logger::getInstance().log(logger::Level::kWarning,  CUR_SOURCE, __VA_ARGS__)
+#define LOG_ERR(...)    Logger::getInstance().log(logger::Level::kError,    CUR_SOURCE, __VA_ARGS__)
+#define LOG_CRIT(...)   Logger::getInstance().log(logger::Level::kCritical, CUR_SOURCE, __VA_ARGS__)
+#define LOG_FATAL(...)  Logger::getInstance().log(logger::Level::kFatal,    CUR_SOURCE, __VA_ARGS__)
 
 class Logger final
 {
@@ -149,13 +102,13 @@ public:
     )
     {
         std::string message = std::format(format, std::forward<Args>(args)...);
-        log(level, std::string_view{message}, loc);
+        log(level, loc, std::string_view{message});
     }
 
     void log(
         logger::Level level,
-        std::string_view message,
-        const std::source_location& loc = std::source_location::current()
+        const std::source_location& loc,
+        std::string_view message
     );
 
     void shutdown();
