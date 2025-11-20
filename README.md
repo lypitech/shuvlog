@@ -69,11 +69,17 @@ Here is a list of the sinks implemented by default:
 > [!IMPORTANT]
 > In formats, everything that is under curly bracket (`{}`) is [configurable](#settings) and so, optional.
 
+> [!IMPORTANT]
+> Two sinks can't point to the same output. Why would you print everything more than once in the same file?
+
 ---
 
 #### 1.1 `ConsoleSink`
 > [!IMPORTANT]  
 > Logs that have a level greater than or equal to `kError` will be outputted to the standard error output.
+
+> [!CAUTION]
+> Only one instance of `ConsoleSink` can be added. Why would you print everything twice?
 
 __Parameters:__
 None.
