@@ -14,6 +14,7 @@
 #include "Settings.h"
 #include "Sink.h"
 #include "ThreadSafeQueue.h"
+#include "Sinks/ConsoleSink.h"
 
 #define LOG_DEBUG(s)    Logger::getInstance().log(s, logger::Level::kDebug)
 #define LOG_INFO(s)     Logger::getInstance().log(s, logger::Level::kInfo)
@@ -48,11 +49,29 @@ public:
             "T must inherit from logger::Sink."
         );
 
+        constexpr bool isConsoleSink = std::is_same_v<T, logger::ConsoleSink>;
+
+        // if user wants to add a second console sink
+        if (isConsoleSink && _hasConsoleSink) {
+            const std::string error("Only one console sink can be added.");
+
+            if (_isInitialized && !_sinks.empty()) {
+                LOG_WARN(error);
+            } else {
+                std::cerr << "WARNING: " << error << std::endl;
+            }
+            return;
+        }
+
         try {
             auto sink = std::make_unique<T>(std::forward<Args>(args)...);
             std::lock_guard lock(_sinkMutex);
 
             _sinks.push_back(std::move(sink));
+
+            if (isConsoleSink) {
+                _hasConsoleSink = true;
+            }
         } catch (const logger::exception::LoggerException& e) {
             const std::string error = std::format("Encountered an error while adding Sink: {}", e.what());
 
@@ -83,7 +102,6 @@ private:
     Logger() = default;
     ~Logger();
 
-    // worker loop
     void workerLoop();
 
     void collectBatch(std::vector<Log>& batch);
@@ -104,6 +122,7 @@ private:
 
     std::atomic<bool> _isRunning{false};
     std::atomic<bool> _isInitialized{false};
+    bool _hasConsoleSink = false;
 
     static std::once_flag initFlag;
 };
