@@ -54,8 +54,8 @@ void Logger::initialize(
 
 void Logger::log(
     logger::Level level,
-    const std::string_view message,
-    const std::source_location& loc
+    const std::source_location& loc,
+    const std::string_view message
 )
 {
     if (!_isInitialized) {
