@@ -53,8 +53,8 @@ void Logger::initialize(
 }
 
 void Logger::log(
-    const std::string_view message,
     logger::Level level,
+    const std::string_view message,
     const std::source_location& loc
 )
 {
