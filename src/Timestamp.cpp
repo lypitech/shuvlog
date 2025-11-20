@@ -3,6 +3,10 @@
 #include <chrono>
 #include <iomanip>
 
+#if defined(_WIN32)
+#   define localtime_r(T,Tm) localtime_s(Tm,T)
+#endif
+
 std::tm fromTimePoint(const time_point<system_clock> timestamp)
 {
     std::tm tm{};
