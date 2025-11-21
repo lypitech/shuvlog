@@ -168,7 +168,7 @@ void Logger::shutdown()
     if (!_isInitialized) {
         return;
     }
-    LOG_INFO(std::format("Shutting down Logger, will dump remaining logs ({}).", _queue.size()));
+    LOG_INFO("Shutting down Logger, will dump remaining logs ({}).", _queue.size());
     _isRunning = false;
     _queue.notifyAll();
     if (_worker.joinable()) {
