@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(shuvlog
     VERSION 1.0.0
     DESCRIPTION "Leveled multi-threaded Logger library"
-    HOMEPAGE_URL "https://github.com/shuvlyy/shovologger"
+    HOMEPAGE_URL "https://github.com/lypitech/shuvlog"
     LANGUAGES CXX
 )
 
