@@ -382,6 +382,12 @@ LOG_CRIT("Critical log.");
 LOG_FATAL("Fatal log.");
 ```
 
+You can also format your logs, just as in [`std::format`](https://en.cppreference.com/w/cpp/utility/format/format.html):
+```c++
+constexpr std::string currentMusic("Silly Joke - Instrumental");
+LOG_INFO("Hi my name is {}, I'm {} years old and I currently listen to {}.", "Ly", 19, currentMusic);
+```
+
 If you want, you can also manually use the `Logger#log` function. But that's too much writing for nothing.
 
 And Logger does the rest! Enjoy logging! :)
