@@ -101,17 +101,15 @@ std::string kernelver()
     OSVERSIONINFOEXA osvi{};
     osvi.dwOSVersionInfoSize = sizeof(osvi);
 
-    if (RtlGetVersion != nullptr) {
-        using RtlGetVersionFunc = LONG(WINAPI*)(PRTL_OSVERSIONINFOW);
-        auto ntdll = GetModuleHandleW(L"ntdll.dll");
-        auto rtlGetVersion = reinterpret_cast<RtlGetVersionFunc>(GetProcAddress(ntdll, "RtlGetVersion"));
+    using RtlGetVersionFunc = LONG(WINAPI*)(PRTL_OSVERSIONINFOW);
+    auto ntdll = GetModuleHandleW(L"ntdll.dll");
+    auto rtlGetVersion = reinterpret_cast<RtlGetVersionFunc>(GetProcAddress(ntdll, "RtlGetVersion"));
 
-        if (rtlGetVersion) {
-            RTL_OSVERSIONINFOW ver{};
-            ver.dwOSVersionInfoSize = sizeof(ver);
-            rtlGetVersion(&ver);
-            return std::format("(build {}.{}.{})", ver.dwMajorVersion, ver.dwMinorVersion, ver.dwBuildNumber);
-        }
+    if (rtlGetVersion) {
+        RTL_OSVERSIONINFOW ver{};
+        ver.dwOSVersionInfoSize = sizeof(ver);
+        rtlGetVersion(&ver);
+        return std::format("(build {}.{}.{})", ver.dwMajorVersion, ver.dwMinorVersion, ver.dwBuildNumber);
     }
     return "(unknown build)";
 #endif

@@ -1,5 +1,6 @@
-#include "logger/FileSink.h"
+#include <filesystem>
 
+#include "logger/FileSink.h"
 #include "logger/Exceptions/BadFileExtension.h"
 #include "logger/Exceptions/BadRecommendedExtension.h"
 #include "logger/Exceptions/CouldNotOpenFile.h"
@@ -13,7 +14,7 @@ FileSink::FileSink(
     const sink::Settings settings
 )
     : Sink(settings)
-    , _absoluteFilepath(std::filesystem::absolute(filepath))
+    , _absoluteFilepath(std::filesystem::absolute(filepath).generic_string())
 {
     if (!recommendedExtension.starts_with(".") || recommendedExtension.length() < 2) {
         throw exception::BadRecommendedExtension(recommendedExtension);
