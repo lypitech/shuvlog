@@ -35,8 +35,11 @@ void Logger::initialize(
 
         auto& instance = getInstance();
 
-        instance._projectName = projectName;
         instance._settings = settings;
+        instance._projectName = projectName;
+        instance._buildInfo = buildInfo;
+        instance._argc = argc;
+        instance._argv = argv;
 
         if (!fs::exists(LOG_DIR)) {
             fs::create_directories(LOG_DIR);

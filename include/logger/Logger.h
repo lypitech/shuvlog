@@ -149,6 +149,16 @@ public:
                 }
             }
 
+            if (_isInitialized) {
+                sink->writeHeader(
+                    _projectName,
+                    _argc,
+                    _argv,
+                    _buildInfo,
+                    _settings
+                );
+            }
+
             _sinks.push_back(std::move(sink));
 
             if (isConsoleSink) {
@@ -254,6 +264,8 @@ private:
     logger::Settings _settings;
     std::string _projectName;
     logger::BuildInfo _buildInfo = logger::BuildInfo::unknown();
+    int _argc = 0;
+    const char** _argv = nullptr;
 
     // runtime
     std::thread _worker;
