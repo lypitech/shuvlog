@@ -8,15 +8,38 @@
 namespace logger
 {
 
+/**
+ * @class   FileSink
+ * @brief   Abstract base class for sinks that outputs logs to a file.
+ *
+ * FileSink manages by itself extension verification, file opening, and
+ * the file stream. File sinks (such as Log, JSON, or NDJSON)
+ * should derive from this class and implement their own formatting logic
+ * via the Sink interface.
+ *
+ * By default, a FileSink won't open the filestream if output file doesn't
+ * end with the recommended extension.
+ */
 class FileSink : public Sink
 {
 public:
+    /**
+     * @brief   Constructs a FileSink and opens the file stream.
+     *
+     * @param   filepath                The user-provided path to the output file.
+     * @param   recommendedExtension    The preferred file extension for this
+     *                                  sink type (e.g., ".log", ".json", ".ndjson").
+     * @param   settings                Format and metadata display settings for the sink.
+     */
     explicit FileSink(
         const std::string& filepath,
         const std::string& recommendedExtension,
         sink::Settings settings
     );
 
+    /**
+     * @return  The full absolute path to the opened output file used by the sink.
+     */
     std::string getAbsoluteFilepath() const { return _absoluteFilepath; }
 
 protected:
