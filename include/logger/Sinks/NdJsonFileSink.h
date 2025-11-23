@@ -1,14 +1,22 @@
 #ifndef SHUVLOG_NDJSONFILESINK_H
 #define SHUVLOG_NDJSONFILESINK_H
 
-#include <fstream>
-
 #include "logger/FileSink.h"
-#include "logger/Sink.h"
 
 namespace logger
 {
 
+/**
+ * @class   NdJsonFileSink
+ *
+ * This sink serializes log messages into unformatted NDJSON and writes
+ * them to a @code .ndjson@endcode file.
+ *
+ * @see @class JsonFileSink
+ *
+ * @warning Registering multiple file sinks targeting the same output file
+ *          will throw a @code DuplicateSink@endcode exception.
+ */
 class NdJsonFileSink : public FileSink
 {
 public:

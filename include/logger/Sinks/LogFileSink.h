@@ -2,11 +2,23 @@
 #define SHUVLOG_LOGFILESINK_H
 
 #include "logger/FileSink.h"
-#include "logger/Sink.h"
 
 namespace logger
 {
 
+/**
+ * @class   LogFileSink
+ *
+ * This sink writes human-readable log messages to a @code .log@endcode file.
+ * Entries are formatted for readability and useful for debugging.
+ *
+ * Each log event is appended as a fully formatted line, including timestamp,
+ * severity level, thread information, and message content, according to
+ * sink's settings.
+ *
+ * @warning Registering multiple file sinks targeting the same output file
+ *          will throw a @code DuplicateSink@endcode exception.
+ */
 class LogFileSink : public FileSink
 {
 public:

@@ -6,6 +6,15 @@
 namespace logger
 {
 
+/**
+ * @class   ConsoleSink
+ *
+ * This sink writes log messages directly to the console (@code stdout@endcode
+ * or @code stderr@endcode, depending on severity or formatting rules).
+ *
+ * @warning Only one ConsoleSink may be registered at a time. Attempting to add
+ *          multiple instances results in a @code DuplicateSink@endcode error.
+ */
 class ConsoleSink : public Sink
 {
 public:
