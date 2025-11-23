@@ -26,19 +26,62 @@ namespace logger
 #define SHLG_BUILD_SYSTEM nullptr
 #endif
 
+/**
+ * @class   BuildInfo
+ * @brief   Build-time metadata about project build.
+ *
+ * This class stores information about the build configuration, compiler,
+ * compiler flags, and the build system used to produce the executable or
+ * library.
+ * This class can only be constructed through available factories, and its
+ * fields are read-only.
+ *
+ * Instances of this class are used by Logger sinks to write a structured
+ * startup header that describes the environment in which the application
+ * was built.
+ */
 class BuildInfo final
 {
 public:
+    /**
+     * @return  BuildInfo class populated with "Unknown" strings.
+     */
     static BuildInfo unknown();
+
+    /**
+     * @return  An automatically populated BuildInfo class with
+     *          information that CMake provides through CMake-generated
+     *          macros (e.g. @code SHLG_BUILD_TYPE@endcode)
+     */
     static BuildInfo fromCMake();
 
+    /// @return The CMake build type (Debug, Release, etc.).
     [[nodiscard]] std::string getType() const { return _type; }
+
+    /// @return The project version defined at build time.
     [[nodiscard]] std::string getVersion() const { return _version; }
+
+    /// @return The name and version of the compiler used to build the project.
     [[nodiscard]] std::string getCompiler() const { return _compiler; }
+
+    /// @return The compiler flags that were active during the build.
     [[nodiscard]] std::string getCompilerFlags() const { return _compilerFlags; }
+
+    /// @return The name and version of the build system (e.g., "CMake 3.16").
     [[nodiscard]] std::string getBuildSystem() const { return _buildSystem; }
 
 private:
+    /**
+     * This constructor is private to force users to create a BuildInfo
+     * class with the @code unknown()@endcode and @code fromCMake()@endcode
+     * factory methods.
+     *
+     * @param   type            The build type string.
+     * @param   version         The project version string.
+     * @param   compiler        The compiler identifier and version.
+     * @param   compilerFlags   The active compiler flags.
+     * @param   buildSystem     The build system name and version.
+     */
     explicit BuildInfo(
         std::string type,
         std::string version,
