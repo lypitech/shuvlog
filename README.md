@@ -406,7 +406,33 @@ you can simply call the `Logger#shutdown()` function.
 
 ## Contributing
 
-TODO
+Contributions are welcome, whether it’s bug fixes, new features, documentation improvements, or ideas to make the
+library better. Thank you for taking the time to support the project!
+
+### How to contribute
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your modifications with clear messages
+4. Push the branch
+5. Open a Pull Request describing your changes
+
+### Before opening a PR
+
+**Please make sure:**
+- The project successfully builds with CMake on Linux, macOS, and Windows
+- Your changes do not introduce warnings (or silence them if intentional)
+- All sinks and Logger behaviors remain thread-safe
+- You tested your changes with unit tests
+
+### Bug report
+Found a bug? Have an idea? Feel free to open an issue.
+
+**When reporting a bug, please include:**
+- A minimal code snippet reproducing the bug
+- Your compiler version
+- Your OS
+- Your CMake version
 
 ---
 
