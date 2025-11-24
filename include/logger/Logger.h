@@ -18,13 +18,16 @@
 #include "Exceptions/DuplicateSink.h"
 #include "Sinks/ConsoleSink.h"
 
-#define CUR_SOURCE      std::source_location::current()
-#define LOG_DEBUG(...)  Logger::getInstance().log(logger::Level::kDebug,    CUR_SOURCE, __VA_ARGS__)
-#define LOG_INFO(...)   Logger::getInstance().log(logger::Level::kInfo,     CUR_SOURCE, __VA_ARGS__)
-#define LOG_WARN(...)   Logger::getInstance().log(logger::Level::kWarning,  CUR_SOURCE, __VA_ARGS__)
-#define LOG_ERR(...)    Logger::getInstance().log(logger::Level::kError,    CUR_SOURCE, __VA_ARGS__)
-#define LOG_CRIT(...)   Logger::getInstance().log(logger::Level::kCritical, CUR_SOURCE, __VA_ARGS__)
-#define LOG_FATAL(...)  Logger::getInstance().log(logger::Level::kFatal,    CUR_SOURCE, __VA_ARGS__)
+#define CUR_SOURCE          std::source_location::current()
+#define LOG_DEBUG(...)      Logger::getInstance().log(logger::Level::kDebug,    CUR_SOURCE, __VA_ARGS__)
+#define LOG_TRACE_L3(...)   Logger::getInstance().log(logger::Level::kTraceL3,  CUR_SOURCE, __VA_ARGS__)
+#define LOG_TRACE_L2(...)   Logger::getInstance().log(logger::Level::kTraceL2,  CUR_SOURCE, __VA_ARGS__)
+#define LOG_TRACE_L1(...)   Logger::getInstance().log(logger::Level::kTraceL1,  CUR_SOURCE, __VA_ARGS__)
+#define LOG_INFO(...)       Logger::getInstance().log(logger::Level::kInfo,     CUR_SOURCE, __VA_ARGS__)
+#define LOG_WARN(...)       Logger::getInstance().log(logger::Level::kWarning,  CUR_SOURCE, __VA_ARGS__)
+#define LOG_ERR(...)        Logger::getInstance().log(logger::Level::kError,    CUR_SOURCE, __VA_ARGS__)
+#define LOG_CRIT(...)       Logger::getInstance().log(logger::Level::kCritical, CUR_SOURCE, __VA_ARGS__)
+#define LOG_FATAL(...)      Logger::getInstance().log(logger::Level::kFatal,    CUR_SOURCE, __VA_ARGS__)
 
 /**
  * @class   Logger
