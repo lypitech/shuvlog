@@ -27,12 +27,14 @@ public:
      * @brief   Constructs a FileSink and opens the file stream.
      *
      * @param   filepath                The user-provided path to the output file.
+     * @param   extensionName           The name of the extension (e.g. "JSON", "Log", "NDJSON")
      * @param   recommendedExtension    The preferred file extension for this
-     *                                  sink type (e.g., ".log", ".json", ".ndjson").
+     *                                  sink type (e.g. ".log", ".json", ".ndjson").
      * @param   settings                Format and metadata display settings for the sink.
      */
     explicit FileSink(
         const std::string& filepath,
+        const std::string& extensionName,
         const std::string& recommendedExtension,
         sink::Settings settings
     );

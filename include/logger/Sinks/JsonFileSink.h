@@ -24,7 +24,7 @@ public:
     explicit JsonFileSink(
         const std::string& filepath,
         sink::Settings settings = sink::Settings()
-    ) : FileSink(filepath, ".json", settings) {}
+    ) : FileSink(filepath, "JSON", ".json", settings) {}
 
     void write(const Log& log) override;
     void writeHeader(

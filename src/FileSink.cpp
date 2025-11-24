@@ -10,6 +10,7 @@ namespace logger
 
 FileSink::FileSink(
     const std::string& filepath,
+    const std::string& extensionName,
     const std::string& recommendedExtension,
     const sink::Settings settings
 )
@@ -21,7 +22,7 @@ FileSink::FileSink(
     }
 
     if (!_absoluteFilepath.ends_with(recommendedExtension)) {
-        throw exception::BadFileExtension(recommendedExtension);
+        throw exception::BadFileExtension(extensionName, recommendedExtension);
     }
 
     _file.open(_absoluteFilepath, std::ios::in | std::ios::out | std::ios::trunc);

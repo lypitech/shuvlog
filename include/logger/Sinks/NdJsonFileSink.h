@@ -23,7 +23,7 @@ public:
     explicit NdJsonFileSink(
         const std::string& filepath,
         sink::Settings settings = sink::Settings()
-    ) : FileSink(filepath, ".ndjson", settings) {}
+    ) : FileSink(filepath, "NDJSON", ".ndjson", settings) {}
 
     void write(const Log& log) override;
     void writeHeader(

@@ -12,18 +12,10 @@ namespace logger::exception
 class BadFileExtension : public LoggerException
 {
 public:
-  explicit BadFileExtension(std::string extension)
+  explicit BadFileExtension(std::string type, std::string extension)
       : LoggerException(std::format(
-          "CAUTION: Prefer piping {} to .{} files.",
-          extension,
-          [] (std::string s) {
-              std::ranges::transform(s, s.begin(),
-              [](const unsigned char c) {
-                  return static_cast<char>(std::tolower(c));
-              });
-              return s;
-          }(extension) // C++ way of lowering case of string with an
-                          // immediately invoked lambda expression. nice
+          "CAUTION: Prefer piping {} to {} files.",
+          type, extension
       )) {}
 };
 
