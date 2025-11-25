@@ -62,11 +62,29 @@ class Sink
 {
 public:
     /**
-     * @param   settings    Structure that determines how log data should be
-     *                      formatted (timestamps, thread info...)
+     * @brief   Constructs a sink with formatting settings only.
+     * @param   settings    Settings struct describing how log data should be formatted
      */
-    explicit Sink(sink::Settings settings)
-        : _settings(settings) {}
+    explicit Sink(sink::Settings settings);
+
+    /**
+     * @brief   Constructs a sink with formatting and filtering settings.
+     *
+     * @param   filterMode  Filtering mode to use
+     * @param   levelSpec   Level specification (meaning depends on mode):
+     *                      - kMinimumLevel: Must be a single level
+     *                      - kExplicit: Bitwise OR of desired levels
+     *                      - kAll: Parameter ignored
+     * @param   settings    Settings struct describing how log data should be formatted
+     *
+     * @throws  exception::InvalidLevel if kMinimumLevel mode receives OR'd levels
+     */
+    Sink(
+        sink::FilterMode filterMode,
+        uint16_t levelSpec,
+        sink::Settings settings
+    );
+
     virtual ~Sink() = default;
 
     /**
@@ -110,6 +128,9 @@ public:
 
 protected:
     sink::Settings _settings;
+    sink::FilterMode _filterMode;
+    Level _minimumLevel;
+    uint16_t _levelMask;
 
 private:
     /**
