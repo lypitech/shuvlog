@@ -110,6 +110,14 @@ public:
 
 protected:
     sink::Settings _settings;
+
+private:
+    /**
+     * @brief   Checks if a value has exactly one bit set (isn't multiple levels at once).
+     * @param   value   The value to check
+     * @return  @code true@endcode if exactly one bit is set
+     */
+    static bool isSingleLevel(uint16_t value);
 };
 
 }
