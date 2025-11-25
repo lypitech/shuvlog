@@ -126,6 +126,13 @@ public:
      */
     virtual void close() = 0;
 
+    /**
+     * @brief   Checks if a log level should be processed by this sink.
+     * @param   level The level to check
+     * @return  true if the level passes the current filter
+     */
+    [[nodiscard]] bool shouldLog(Level level) const;
+
 protected:
     sink::Settings _settings;
     sink::FilterMode _filterMode;

@@ -44,6 +44,23 @@ Sink::Sink(
     }
 }
 
+bool Sink::shouldLog(Level level) const
+{
+    switch (_filterMode)
+    {
+        case sink::FilterMode::kAll:
+            return true;
+
+        case sink::FilterMode::kMinimumLevel:
+            return static_cast<uint16_t>(level) >=
+                   static_cast<uint16_t>(_minimumLevel);
+
+        case sink::FilterMode::kExplicit:
+            return (static_cast<uint16_t>(level) & _levelMask) != 0;
+    }
+    return false;
+}
+
 bool Sink::isSingleLevel(uint16_t value)
 {
     // A power of 2 has exactly one bit set
