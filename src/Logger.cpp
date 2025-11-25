@@ -157,6 +157,9 @@ std::string Logger::levelToString(const logger::Level level)
     switch (level) {
         using enum logger::Level;
         case kDebug:    return "DEBUG";
+        case kTraceR3:  return "TRACE_R3";
+        case kTraceR2:  return "TRACE_R2";
+        case kTraceR1:  return "TRACE_R1";
         case kInfo:     return "INFO";
         case kWarning:  return "WARNING";
         case kError:    return "ERROR";
