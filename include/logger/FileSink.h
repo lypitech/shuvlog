@@ -40,6 +40,20 @@ public:
     );
 
     /**
+     * @brief Same as first FileSink constructor but with level filtering specification.
+     * @see @class  FileSink
+     * @see @class  Sink
+     */
+    explicit FileSink(
+        const std::string& filepath,
+        const std::string& extensionName,
+        const std::string& recommendedExtension,
+        sink::FilterMode filterMode,
+        uint16_t levelSpec,
+        sink::Settings settings
+    );
+
+    /**
      * @return  The full absolute path to the opened output file used by the sink.
      */
     std::string getAbsoluteFilepath() const { return _absoluteFilepath; }
