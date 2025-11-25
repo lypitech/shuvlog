@@ -36,6 +36,17 @@ namespace sink
         bool showColumnNumber = true;
     };
 
+    /**
+     * @enum    FilterMode
+     * @brief   Determines how the sink filters log levels.
+     */
+    enum class FilterMode
+    {
+        kAll,           ///< Accept all levels
+        kMinimumLevel,  ///< Accept logs at or above a minimum level
+        kExplicit,      ///< Accept only specified levels
+    };
+
 }
 
 /**
