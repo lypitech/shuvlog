@@ -2,10 +2,9 @@
 #include <chrono>
 #include <iostream>
 #include <format>
+#include <unordered_set>
 
 #include "logger/Logger.h"
-
-#include <unordered_set>
 
 #include "logger/Thread.h"
 #include "logger/Timestamp.h"
