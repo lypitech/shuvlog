@@ -18,7 +18,15 @@ namespace logger
 class ConsoleSink : public Sink
 {
 public:
-    explicit ConsoleSink(sink::Settings settings = sink::Settings());
+    explicit ConsoleSink(
+        sink::Settings settings = sink::Settings()
+    );
+
+    explicit ConsoleSink(
+        sink::FilterMode filterMode,
+        uint16_t levelSpec,
+        sink::Settings settings = sink::Settings()
+    );
 
     void write(const Log& log) override;
     void writeHeader(

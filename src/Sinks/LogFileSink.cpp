@@ -10,6 +10,37 @@
 namespace logger
 {
 
+static const char* EXTENSION_NAME = "Log";
+static const char* RECOMMENDED_EXTENSION = ".log";
+
+LogFileSink::LogFileSink(
+    const std::string &filepath,
+    sink::Settings settings
+)
+    : FileSink(
+        filepath,
+        EXTENSION_NAME,
+        RECOMMENDED_EXTENSION,
+        settings
+    )
+{}
+
+LogFileSink::LogFileSink(
+    const std::string &filepath,
+    sink::FilterMode filterMode,
+    uint16_t levelSpec,
+    sink::Settings settings
+)
+    : FileSink(
+        filepath,
+        EXTENSION_NAME,
+        RECOMMENDED_EXTENSION,
+        filterMode,
+        levelSpec,
+        settings
+    )
+{}
+
 static std::string formatLog(
     const Log& log,
     const sink::Settings& settings
@@ -87,7 +118,7 @@ void LogFileSink::writeHeader(
     const int argc,
     const char* argv[],
     const BuildInfo& buildInfo,
-    const Settings& settings
+    const Settings& /*settings*/
 )
 {
     std::ostringstream command;
@@ -99,7 +130,6 @@ void LogFileSink::writeHeader(
         { "Project",            projectName                                         },
         { "Version",            buildInfo.getVersion()                              },
         { "Build type",         buildInfo.getType()                                 },
-        { "Minimum level",      Logger::levelToString(settings.getMinimumLevel())   },
         { "",                   ""                                                  },
         { "Command",            command.str()                                       },
         { "Start time",         formatTimestamp(system_clock::now())                },

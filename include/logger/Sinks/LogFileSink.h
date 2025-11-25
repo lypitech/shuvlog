@@ -25,7 +25,14 @@ public:
     explicit LogFileSink(
         const std::string& filepath,
         sink::Settings settings = sink::Settings()
-    ) : FileSink(filepath, "Log", ".log", settings) {}
+    );
+
+    explicit LogFileSink(
+        const std::string& filepath,
+        sink::FilterMode filterMode,
+        uint16_t levelSpec,
+        sink::Settings settings = sink::Settings()
+    );
 
     void write(const Log& log) override;
     void writeHeader(

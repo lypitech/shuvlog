@@ -8,6 +8,37 @@
 namespace logger
 {
 
+static const char* EXTENSION_NAME = "NDJSON";
+static const char* RECOMMENDED_EXTENSION = ".ndjson";
+
+NdJsonFileSink::NdJsonFileSink(
+    const std::string &filepath,
+    sink::Settings settings
+)
+    : FileSink(
+        filepath,
+        EXTENSION_NAME,
+        RECOMMENDED_EXTENSION,
+        settings
+    )
+{}
+
+NdJsonFileSink::NdJsonFileSink(
+    const std::string &filepath,
+    sink::FilterMode filterMode,
+    uint16_t levelSpec,
+    sink::Settings settings
+)
+    : FileSink(
+        filepath,
+        EXTENSION_NAME,
+        RECOMMENDED_EXTENSION,
+        filterMode,
+        levelSpec,
+        settings
+    )
+{}
+
 static std::string formatLog(const Log& log)
 {
     std::ostringstream oss;
@@ -35,7 +66,7 @@ void NdJsonFileSink::writeHeader(
     const int argc,
     const char* argv[],
     const BuildInfo& buildInfo,
-    const Settings& settings
+    const Settings& /*settings*/
 )
 {
     std::ostringstream body;
@@ -44,7 +75,6 @@ void NdJsonFileSink::writeHeader(
     body << R"("projectName":")" << projectName << "\",";
     body << R"("version":")" << buildInfo.getVersion() << "\",";
     body << R"("buildType":")" << buildInfo.getType() << "\",";
-    body << R"("minimumLevel":")" << Logger::levelToString(settings.getMinimumLevel()) << "\",";
 
     body << R"("command":")";
     for (int i = 0; i < argc; i++) {

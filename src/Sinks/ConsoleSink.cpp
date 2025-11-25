@@ -12,6 +12,14 @@ ConsoleSink::ConsoleSink(sink::Settings settings)
     : Sink(settings)
 {}
 
+ConsoleSink::ConsoleSink(
+    sink::FilterMode filterMode,
+    uint16_t levelSpec,
+    sink::Settings settings
+)
+    : Sink(filterMode, levelSpec, settings)
+{}
+
 static std::string formatLog(
     const Log& log,
     const sink::Settings& settings
