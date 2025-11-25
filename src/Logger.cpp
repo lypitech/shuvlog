@@ -4,6 +4,9 @@
 #include <format>
 
 #include "logger/Logger.h"
+
+#include <unordered_set>
+
 #include "logger/Thread.h"
 #include "logger/Timestamp.h"
 
@@ -74,10 +77,6 @@ void Logger::log(
         return;
     }
 
-    if (static_cast<uint8_t>(level) < static_cast<uint8_t>(_settings.getMinimumLevel())) {
-        return;
-    }
-
     _queue.push(Log{ std::string(message), level, loc });
 }
 
@@ -129,13 +128,20 @@ void Logger::flushBatch(std::vector<Log>& batch)
         sinksCopy = _sinks;
     }
 
+    std::unordered_set<logger::Sink*> sinksToFlush;
+
     for (Log& log : batch) {
         for (const auto& sink : _sinks) {
-            sink->write(log);
+            if (sink->shouldLog(log.getLevel())) {
+                sink->write(log);
+                sinksToFlush.insert(sink.get());
+            }
         }
     }
     for (const auto& sink : sinksCopy) {
-        sink->flush();
+        if (sinksToFlush.contains(sink.get())) {
+            sink->flush();
+        }
     }
     batch.clear();
 }
