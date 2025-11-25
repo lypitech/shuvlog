@@ -19,6 +19,16 @@ enum class Level : uint16_t
     kFatal      = 1 << 8,
 };
 
+inline uint16_t operator|(Level a, Level b)
+{
+    return static_cast<uint16_t>(a) | static_cast<uint16_t>(b);
+}
+
+inline uint16_t operator|(uint16_t a, Level b)
+{
+    return a | static_cast<uint16_t>(b);
+}
+
 }
 
 #endif //SHUVLOG_LEVEL_H
