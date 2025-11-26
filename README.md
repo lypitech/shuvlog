@@ -248,6 +248,43 @@ LOG_DEBUG("ゲンダイ");
  */
 ```
 
+### 1.6 Levels
+
+Each sink can choose what kind of levels they want to process.
+
+3 modes are available:
+
+| Mode          | Description                                                                       |
+|---------------|-----------------------------------------------------------------------------------|
+| All           | All levels are processed by the sink (default behavior).                          |
+| Explicit      | Only explicitly specified levels are processed by the sink.                       |
+| Minimum level | Only levels that are equal or greater than `levelMask` are processed by the sink. |
+
+Example:
+```cpp
+All levels will be processed by the sink.
+Logger#addSink<logger::LogFileSink>(
+    "all.log",
+    // What is below is facultative, as these are the default values.
+    sink::FilterMode::kAll,
+    static_cast<uint16_t>(Level::kTraceR1) // When using FilterMode::kAll, this value is ignored.
+);
+
+// Logs that have a level greater or equal than Level::kTraceR1 will be processed by the sink.
+Logger#addSink<logger::LogFileSink>(
+    "minimumLevels.log",
+    sink::FilterMode::kMinimumLevel,
+    static_cast<uint16_t>(Level::kTraceR1)
+);
+
+// Logs that have kTraceR1, kCritical or kFatal will be processed by the sink.
+Logger#addSink<logger::LogFileSink>(
+    "minimumLevels.log",
+    sink::FilterMode::kExplicit,
+    Level::kTraceR1 | Level::kCritical | Level::kFatal // Bitwise OR (|) to use multiple values at once.
+);
+```
+
 ## How to use
 
 Before starting the setup, keep in mind that non-static functions in the `Logger` class must be accessed via the
