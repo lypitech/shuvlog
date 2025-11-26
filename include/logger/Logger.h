@@ -228,14 +228,6 @@ public:
 
     // === helpers ===
     /**
-     * @brief   Converts a level to a string.
-     *
-     * @param   level   Logging severity level
-     * @return  Converted data (e.g., "INFO", "ERROR")
-     */
-    static std::string levelToString(logger::Level level);
-
-    /**
      * @brief   Generates a timestamped filename for log output.
      *
      * The resulting filename includes the project name, current date/time,

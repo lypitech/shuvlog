@@ -29,6 +29,34 @@ inline uint16_t operator|(uint16_t a, Level b)
     return a | static_cast<uint16_t>(b);
 }
 
+namespace level
+{
+
+    /**
+     * @brief   Converts a level to a string.
+     *
+     * @param   level   Logging severity level
+     * @return  Converted data (e.g., "INFO", "ERROR")
+     */
+    inline std::string to_string(Level level)
+    {
+        switch (level) {
+            using enum Level;
+            case kDebug:    return "DEBUG";
+            case kTraceR3:  return "TRACE_R3";
+            case kTraceR2:  return "TRACE_R2";
+            case kTraceR1:  return "TRACE_R1";
+            case kInfo:     return "INFO";
+            case kWarning:  return "WARNING";
+            case kError:    return "ERROR";
+            case kCritical: return "CRITICAL";
+            case kFatal:    return "FATAL";
+            default:        return "UNKNOWN";
+        }
+    }
+
+}
+
 }
 
 #endif //SHUVLOG_LEVEL_H
