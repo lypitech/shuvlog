@@ -1,23 +1,31 @@
-#include "logger/Sinks/ConsoleSink.h"
-
 #include <iostream>
+#if defined(_WIN32)
+#include <windows.h>
+#endif
 
+#include "logger/Sinks/ConsoleSink.h"
 #include "logger/Logger.h"
 #include "logger/Timestamp.h"
 
 namespace logger
 {
 
-ConsoleSink::ConsoleSink(sink::Settings settings)
+ConsoleSink::ConsoleSink(
+    bool useColors,
+    sink::Settings settings
+)
     : Sink(settings)
+    , _useColors(useColors)
 {}
 
 ConsoleSink::ConsoleSink(
     sink::FilterMode filterMode,
     uint16_t levelMask,
+    bool useColors,
     sink::Settings settings
 )
     : Sink(filterMode, levelMask, settings)
+    , _useColors(useColors)
 {}
 
 static std::string formatLog(
@@ -96,7 +104,15 @@ void ConsoleSink::write(const Log& log)
 
     const std::string output = formatLog(log, _settings);
 
+    if (_useColors) {
+        out << level::getColor(log.getLevel());
+    }
+
     out << output;
+
+    if (_useColors) {
+        out << COLOR_RESET;
+    }
 }
 
 void ConsoleSink::writeHeader(
@@ -105,7 +121,17 @@ void ConsoleSink::writeHeader(
     const char* /*argv*/[],
     const BuildInfo& /*buildInfo*/,
     const Settings& /*settings*/
-) {}
+)
+{
+#if defined(_WIN32)
+    // enabling ANSI escape codes on Windows 10+. Won't work on previous versions though, fixme:...
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+#endif
+}
 
 void ConsoleSink::flush()
 {
