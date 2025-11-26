@@ -2,8 +2,10 @@
 #include <chrono>
 #include <iostream>
 #include <format>
+#include <unordered_set>
 
 #include "logger/Logger.h"
+
 #include "logger/Thread.h"
 #include "logger/Timestamp.h"
 
@@ -74,10 +76,6 @@ void Logger::log(
         return;
     }
 
-    if (static_cast<uint8_t>(level) < static_cast<uint8_t>(_settings.getMinimumLevel())) {
-        return;
-    }
-
     _queue.push(Log{ std::string(message), level, loc });
 }
 
@@ -129,13 +127,20 @@ void Logger::flushBatch(std::vector<Log>& batch)
         sinksCopy = _sinks;
     }
 
+    std::unordered_set<logger::Sink*> sinksToFlush;
+
     for (Log& log : batch) {
         for (const auto& sink : _sinks) {
-            sink->write(log);
+            if (sink->shouldLog(log.getLevel())) {
+                sink->write(log);
+                sinksToFlush.insert(sink.get());
+            }
         }
     }
     for (const auto& sink : sinksCopy) {
-        sink->flush();
+        if (sinksToFlush.contains(sink.get())) {
+            sink->flush();
+        }
     }
     batch.clear();
 }
@@ -150,23 +155,6 @@ std::string Logger::generateLogFileName(
         projectName, formatTimestamp(system_clock::now(), true, true, true),
         extension
     );
-}
-
-std::string Logger::levelToString(const logger::Level level)
-{
-    switch (level) {
-        using enum logger::Level;
-        case kDebug:    return "DEBUG";
-        case kTraceR3:  return "TRACE_R3";
-        case kTraceR2:  return "TRACE_R2";
-        case kTraceR1:  return "TRACE_R1";
-        case kInfo:     return "INFO";
-        case kWarning:  return "WARNING";
-        case kError:    return "ERROR";
-        case kCritical: return "CRITICAL";
-        case kFatal:    return "FATAL";
-        default:        return "UNKNOWN";
-    }
 }
 
 void Logger::shutdown()

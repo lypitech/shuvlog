@@ -10,6 +10,37 @@
 namespace logger
 {
 
+static const char* EXTENSION_NAME = "Log";
+static const char* RECOMMENDED_EXTENSION = ".log";
+
+LogFileSink::LogFileSink(
+    const std::string &filepath,
+    sink::Settings settings
+)
+    : FileSink(
+        filepath,
+        EXTENSION_NAME,
+        RECOMMENDED_EXTENSION,
+        settings
+    )
+{}
+
+LogFileSink::LogFileSink(
+    const std::string &filepath,
+    sink::FilterMode filterMode,
+    uint16_t levelMask,
+    sink::Settings settings
+)
+    : FileSink(
+        filepath,
+        EXTENSION_NAME,
+        RECOMMENDED_EXTENSION,
+        filterMode,
+        levelMask,
+        settings
+    )
+{}
+
 static std::string formatLog(
     const Log& log,
     const sink::Settings& settings
@@ -46,7 +77,7 @@ static std::string formatLog(
 
     std::format_to(std::back_inserter(output),
         "{:>8}: ",
-        Logger::levelToString(log.getLevel())
+        level::to_string(log.getLevel())
     );
 
     output += log.getMessage();
@@ -87,19 +118,37 @@ void LogFileSink::writeHeader(
     const int argc,
     const char* argv[],
     const BuildInfo& buildInfo,
-    const Settings& settings
+    const Settings& /*settings*/
 )
 {
     std::ostringstream command;
     for (int k = 0; k < argc; k++) {
         command << argv[k];
     }
+
+    std::string displayedLevelMask;
+
+    if (_filterMode == sink::FilterMode::kMinimumLevel) {
+        displayedLevelMask = level::to_string(_minimumLevel);
+    } else if (_filterMode == sink::FilterMode::kExplicit) {
+        for (const auto& level : level::getIndividualLevelsFromMask(_levelMask)) {
+            displayedLevelMask += level::to_string(level);
+            displayedLevelMask += ", ";
+        }
+        displayedLevelMask.pop_back();
+        displayedLevelMask.pop_back();
+    } else {
+        displayedLevelMask = "None";
+    }
+
     std::vector<std::pair<std::string, std::string>> infos = {
         { "",                   ""                                                  },
         { "Project",            projectName                                         },
         { "Version",            buildInfo.getVersion()                              },
         { "Build type",         buildInfo.getType()                                 },
-        { "Minimum level",      Logger::levelToString(settings.getMinimumLevel())   },
+        { "",                   ""                                                  },
+        { "Filter mode",        sink::filter::to_string(_filterMode)                },
+        { "Level(s)",           displayedLevelMask                               },
         { "",                   ""                                                  },
         { "Command",            command.str()                                       },
         { "Start time",         formatTimestamp(system_clock::now())                },

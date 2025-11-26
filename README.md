@@ -170,7 +170,7 @@ __Log format:__
 ```json
 {
     "timestamp": "2025-11-18 16:59:26.006",
-    "type": "DEBUG",
+    "level": "DEBUG",
     "thread": {
       "name": "MainThread",
       "id": "0x1eda26080"

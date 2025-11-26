@@ -6,15 +6,15 @@
 namespace logger::exception
 {
 
-    class DuplicateSink : public LoggerException
-    {
-    public:
-        explicit DuplicateSink(const std::string& filepath)
-            : LoggerException(std::format(
-                "{}: Another Sink is already using that file/stream.",
-                filepath
-            )) {}
-    };
+class DuplicateSink : public LoggerException
+{
+public:
+    explicit DuplicateSink(const std::string& filepath)
+        : LoggerException(std::format(
+            "{}: Another Sink is already using that file/stream.",
+            filepath
+        )) {}
+};
 
 }
 

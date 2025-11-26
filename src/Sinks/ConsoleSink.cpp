@@ -12,6 +12,14 @@ ConsoleSink::ConsoleSink(sink::Settings settings)
     : Sink(settings)
 {}
 
+ConsoleSink::ConsoleSink(
+    sink::FilterMode filterMode,
+    uint16_t levelMask,
+    sink::Settings settings
+)
+    : Sink(filterMode, levelMask, settings)
+{}
+
 static std::string formatLog(
     const Log& log,
     const sink::Settings& settings
@@ -48,7 +56,7 @@ static std::string formatLog(
 
     std::format_to(std::back_inserter(output),
         "{:>8}: ",
-        Logger::levelToString(log.getLevel())
+        level::to_string(log.getLevel())
     );
 
     output += log.getMessage();

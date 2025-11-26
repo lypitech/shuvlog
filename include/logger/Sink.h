@@ -36,6 +36,39 @@ namespace sink
         bool showColumnNumber = true;
     };
 
+    /**
+     * @enum    FilterMode
+     * @brief   Determines how the sink filters log levels.
+     */
+    enum class FilterMode
+    {
+        kAll,           ///< Accept all levels
+        kMinimumLevel,  ///< Accept logs at or above a minimum level
+        kExplicit,      ///< Accept only specified levels
+    };
+
+    namespace filter
+    {
+
+        /**
+         * @brief   Converts a filter mode to a string.
+         *
+         * @param   filterMode  Filter mode
+         * @return  Converted data (e.g., "All", "Explicit")
+         */
+        inline std::string to_string(FilterMode filterMode)
+        {
+            switch (filterMode) {
+                using enum FilterMode;
+                case kAll:          return "All";
+                case kMinimumLevel: return "Minimum level";
+                case kExplicit:     return "Explicit";
+                default:            return "Unknown";
+            }
+        }
+
+    }
+
 }
 
 /**
@@ -51,11 +84,29 @@ class Sink
 {
 public:
     /**
-     * @param   settings    Structure that determines how log data should be
-     *                      formatted (timestamps, thread info...)
+     * @brief   Constructs a sink with formatting settings only.
+     * @param   settings    Settings struct describing how log data should be formatted
      */
-    explicit Sink(sink::Settings settings)
-        : _settings(settings) {}
+    explicit Sink(sink::Settings settings);
+
+    /**
+     * @brief   Constructs a sink with formatting and filtering settings.
+     *
+     * @param   filterMode  Filtering mode to use
+     * @param   levelMask   Level specification (meaning depends on mode):
+     *                      - kMinimumLevel: Must be a single level
+     *                      - kExplicit: Bitwise OR of desired levels
+     *                      - kAll: Parameter ignored
+     * @param   settings    Settings struct describing how log data should be formatted
+     *
+     * @throws  exception::InvalidLevel if kMinimumLevel mode receives OR'd levels
+     */
+    Sink(
+        sink::FilterMode filterMode,
+        uint16_t levelMask,
+        sink::Settings settings
+    );
+
     virtual ~Sink() = default;
 
     /**
@@ -97,8 +148,26 @@ public:
      */
     virtual void close() = 0;
 
+    /**
+     * @brief   Checks if a log level should be processed by this sink.
+     * @param   level The level to check
+     * @return  true if the level passes the current filter
+     */
+    [[nodiscard]] bool shouldLog(Level level) const;
+
 protected:
     sink::Settings _settings;
+    sink::FilterMode _filterMode;
+    Level _minimumLevel;
+    uint16_t _levelMask;
+
+private:
+    /**
+     * @brief   Checks if a value has exactly one bit set (isn't multiple levels at once).
+     * @param   value   The value to check
+     * @return  @code true@endcode if exactly one bit is set
+     */
+    static bool isSingleLevel(uint16_t value);
 };
 
 }

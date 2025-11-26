@@ -8,13 +8,44 @@
 namespace logger
 {
 
+static const char* EXTENSION_NAME = "NDJSON";
+static const char* RECOMMENDED_EXTENSION = ".ndjson";
+
+NdJsonFileSink::NdJsonFileSink(
+    const std::string &filepath,
+    sink::Settings settings
+)
+    : FileSink(
+        filepath,
+        EXTENSION_NAME,
+        RECOMMENDED_EXTENSION,
+        settings
+    )
+{}
+
+NdJsonFileSink::NdJsonFileSink(
+    const std::string &filepath,
+    sink::FilterMode filterMode,
+    uint16_t levelMask,
+    sink::Settings settings
+)
+    : FileSink(
+        filepath,
+        EXTENSION_NAME,
+        RECOMMENDED_EXTENSION,
+        filterMode,
+        levelMask,
+        settings
+    )
+{}
+
 static std::string formatLog(const Log& log)
 {
     std::ostringstream oss;
 
     oss << "{";
     oss << R"("timestamp":")" << formatTimestamp(log.getTimestamp()) << "\",";
-    oss << R"("type":")" << Logger::levelToString(log.getLevel()) << "\",";
+    oss << R"("level":")" << level::to_string(log.getLevel()) << "\",";
     oss << R"("thread":{"name":")" << log.getThreadName() << R"(","id":")" << log.getThreadId() << "\"},";
     oss << R"("source":")" << log.getLocation().file_name() << "\",";
     oss << R"("functionName":")" << log.getLocation().function_name() << "\",";
@@ -35,7 +66,7 @@ void NdJsonFileSink::writeHeader(
     const int argc,
     const char* argv[],
     const BuildInfo& buildInfo,
-    const Settings& settings
+    const Settings& /*settings*/
 )
 {
     std::ostringstream body;
@@ -44,7 +75,24 @@ void NdJsonFileSink::writeHeader(
     body << R"("projectName":")" << projectName << "\",";
     body << R"("version":")" << buildInfo.getVersion() << "\",";
     body << R"("buildType":")" << buildInfo.getType() << "\",";
-    body << R"("minimumLevel":")" << Logger::levelToString(settings.getMinimumLevel()) << "\",";
+
+    body << R"("filterMode":")" << sink::filter::to_string(_filterMode) << "\",";
+    body << R"("levelMask":)";
+
+    if (_filterMode == sink::FilterMode::kMinimumLevel) {
+        body << "\"" << level::to_string(_minimumLevel) << "\"";
+    } else if (_filterMode == sink::FilterMode::kExplicit) {
+        body << "[";
+        for (const auto& level : level::getIndividualLevelsFromMask(_levelMask)) {
+            body << "\"" << level::to_string(level) << "\",";
+        }
+        body.seekp(-1, std::ios::end);
+        body << "]";
+    } else {
+        body << R"("")";
+    }
+
+    body << ",";
 
     body << R"("command":")";
     for (int i = 0; i < argc; i++) {
