@@ -28,7 +28,7 @@ LogFileSink::LogFileSink(
 LogFileSink::LogFileSink(
     const std::string &filepath,
     sink::FilterMode filterMode,
-    uint16_t levelSpec,
+    uint16_t levelMask,
     sink::Settings settings
 )
     : FileSink(
@@ -36,7 +36,7 @@ LogFileSink::LogFileSink(
         EXTENSION_NAME,
         RECOMMENDED_EXTENSION,
         filterMode,
-        levelSpec,
+        levelMask,
         settings
     )
 {}
@@ -77,7 +77,7 @@ static std::string formatLog(
 
     std::format_to(std::back_inserter(output),
         "{:>8}: ",
-        Logger::levelToString(log.getLevel())
+        level::to_string(log.getLevel())
     );
 
     output += log.getMessage();
@@ -125,11 +125,30 @@ void LogFileSink::writeHeader(
     for (int k = 0; k < argc; k++) {
         command << argv[k];
     }
+
+    std::string displayedLevelMask;
+
+    if (_filterMode == sink::FilterMode::kMinimumLevel) {
+        displayedLevelMask = level::to_string(_minimumLevel);
+    } else if (_filterMode == sink::FilterMode::kExplicit) {
+        for (const auto& level : level::getIndividualLevelsFromMask(_levelMask)) {
+            displayedLevelMask += level::to_string(level);
+            displayedLevelMask += ", ";
+        }
+        displayedLevelMask.pop_back();
+        displayedLevelMask.pop_back();
+    } else {
+        displayedLevelMask = "None";
+    }
+
     std::vector<std::pair<std::string, std::string>> infos = {
         { "",                   ""                                                  },
         { "Project",            projectName                                         },
         { "Version",            buildInfo.getVersion()                              },
         { "Build type",         buildInfo.getType()                                 },
+        { "",                   ""                                                  },
+        { "Filter mode",        sink::filter::to_string(_filterMode)                },
+        { "Level(s)",           displayedLevelMask                               },
         { "",                   ""                                                  },
         { "Command",            command.str()                                       },
         { "Start time",         formatTimestamp(system_clock::now())                },

@@ -28,7 +28,7 @@ public:
     explicit NdJsonFileSink(
         const std::string& filepath,
         sink::FilterMode filterMode,
-        uint16_t levelSpec,
+        uint16_t levelMask,
         sink::Settings settings = sink::Settings()
     );
 

@@ -14,7 +14,7 @@ Sink::Sink(sink::Settings settings)
 
 Sink::Sink(
     sink::FilterMode filterMode,
-    uint16_t levelSpec,
+    uint16_t levelMask,
     sink::Settings settings
 )
     : _settings(settings)
@@ -25,16 +25,16 @@ Sink::Sink(
     switch (filterMode)
     {
         case sink::FilterMode::kMinimumLevel: {
-            if (!isSingleLevel(levelSpec)) {
+            if (!isSingleLevel(levelMask)) {
                 throw exception::InvalidLevel();
             }
 
-            _minimumLevel = static_cast<Level>(levelSpec);
+            _minimumLevel = static_cast<Level>(levelMask);
             break;
         }
 
         case sink::FilterMode::kExplicit: {
-            _levelMask = levelSpec;
+            _levelMask = levelMask;
             break;
         }
 

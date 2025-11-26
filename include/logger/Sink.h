@@ -71,7 +71,7 @@ public:
      * @brief   Constructs a sink with formatting and filtering settings.
      *
      * @param   filterMode  Filtering mode to use
-     * @param   levelSpec   Level specification (meaning depends on mode):
+     * @param   levelMask   Level specification (meaning depends on mode):
      *                      - kMinimumLevel: Must be a single level
      *                      - kExplicit: Bitwise OR of desired levels
      *                      - kAll: Parameter ignored
@@ -81,7 +81,7 @@ public:
      */
     Sink(
         sink::FilterMode filterMode,
-        uint16_t levelSpec,
+        uint16_t levelMask,
         sink::Settings settings
     );
 
