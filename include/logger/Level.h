@@ -55,6 +55,21 @@ namespace level
         }
     }
 
+    inline std::vector<Level> getIndividualLevelsFromMask(uint16_t levelMask)
+    {
+        std::vector<Level> levels;
+        levels.reserve(std::popcount(levelMask)); // std::popcount returns exact amount of bits in levelMask
+
+        while (levelMask != 0) {
+            uint16_t lowestBit = levelMask & -levelMask;
+
+            levels.push_back(static_cast<Level>(lowestBit));
+            levelMask ^= lowestBit; // clearing
+        }
+
+        return levels;
+    }
+
 }
 
 }
