@@ -47,6 +47,28 @@ namespace sink
         kExplicit,      ///< Accept only specified levels
     };
 
+    namespace filter
+    {
+
+        /**
+         * @brief   Converts a filter mode to a string.
+         *
+         * @param   filterMode  Filter mode
+         * @return  Converted data (e.g., "All", "Explicit")
+         */
+        inline std::string to_string(FilterMode filterMode)
+        {
+            switch (filterMode) {
+                using enum FilterMode;
+                case kAll:          return "All";
+                case kMinimumLevel: return "Minimum level";
+                case kExplicit:     return "Explicit";
+                default:            return "Unknown";
+            }
+        }
+
+    }
+
 }
 
 /**
