@@ -25,6 +25,19 @@ namespace logger
      */
     inline const char* getThreadLabel() { return threadLabel; }
 
+    /**
+     * @brief   Formats a thread ID
+     *
+     * @param   id ID of the thread
+     * @return  A prettier thread ID, in a hexadecimal form
+     */
+    inline std::string getPrettyThreadId(std::thread::id id)
+    {
+        std::ostringstream output;
+        output << id;
+        return output.str();
+    }
+
 }
 
 #endif //SHUVLOG_THREAD_H

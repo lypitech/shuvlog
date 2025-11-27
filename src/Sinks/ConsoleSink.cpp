@@ -6,6 +6,7 @@
 #include "logger/Sinks/ConsoleSink.h"
 #include "logger/Logger.h"
 #include "logger/Timestamp.h"
+#include "logger/Thread.h"
 
 namespace logger
 {
@@ -52,7 +53,7 @@ static std::string formatLog(
             std::format_to(std::back_inserter(output),
                 "[{} ({})] ",
                 log.getThreadName(),
-                std::hash<std::thread::id>{}(log.getThreadId())
+                getPrettyThreadId(log.getThreadId())
             );
         } else {
             std::format_to(std::back_inserter(output),
