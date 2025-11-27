@@ -82,7 +82,9 @@ Here is a list of the sinks implemented by default:
 > Only one instance of `ConsoleSink` can be added. Why would you print everything twice?
 
 __Parameters:__
-None.
+- *Whether to use colors or not (optional, default to `true`)*
+> [!CAUTION]
+> Colors does NOT work on versions of Windows prior to Windows 10.
 
 __Header format:__
 None.
