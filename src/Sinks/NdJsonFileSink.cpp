@@ -3,6 +3,8 @@
 #include "logger/Logger.h"
 #include "logger/OsInfo.h"
 #include "logger/Sinks/NdJsonFileSink.h"
+
+#include "logger/Thread.h"
 #include "logger/Timestamp.h"
 
 namespace logger
@@ -46,7 +48,7 @@ static std::string formatLog(const Log& log)
     oss << "{";
     oss << R"("timestamp":")" << formatTimestamp(log.getTimestamp()) << "\",";
     oss << R"("level":")" << level::to_string(log.getLevel()) << "\",";
-    oss << R"("thread":{"name":")" << log.getThreadName() << R"(","id":")" << log.getThreadId() << "\"},";
+    oss << R"("thread":{"name":")" << log.getThreadName() << R"(","id":")" << getPrettyThreadId(log.getThreadId()) << "\"},";
     oss << R"("source":")" << log.getLocation().file_name() << "\",";
     oss << R"("functionName":")" << log.getLocation().function_name() << "\",";
     oss << R"("line":)" << log.getLocation().line() << ",";

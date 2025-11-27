@@ -30,7 +30,7 @@ namespace logger
     /**
      * @brief   Formats a thread ID
      *
-     * @param   id ID of the thread
+     * @param   id  ID of the thread
      * @return  A prettier thread ID, in a hexadecimal form
      */
     inline std::string getPrettyThreadId(std::thread::id id)
