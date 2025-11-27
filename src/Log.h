@@ -5,7 +5,7 @@
 #include <chrono>
 #include <source_location>
 
-#include "Level.h"
+#include "../include/logger/Level.h"
 
 /**
  * @class   Log

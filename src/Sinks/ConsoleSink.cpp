@@ -5,7 +5,7 @@
 
 #include "logger/Sinks/ConsoleSink.h"
 #include "logger/Logger.h"
-#include "logger/Timestamp.h"
+#include "../Timestamp.h"
 #include "logger/Thread.h"
 
 namespace logger

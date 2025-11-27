@@ -1,7 +1,7 @@
 #ifndef SHUVLOG_CONSOLESINK_H
 #define SHUVLOG_CONSOLESINK_H
 
-#include "logger/Sink.h"
+#include "../../../src/Sink.h"
 
 namespace logger
 {

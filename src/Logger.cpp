@@ -7,7 +7,7 @@
 #include "logger/Logger.h"
 
 #include "logger/Thread.h"
-#include "logger/Timestamp.h"
+#include "Timestamp.h"
 
 namespace fs = std::filesystem;
 

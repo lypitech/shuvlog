@@ -1,4 +1,4 @@
-#include "logger/Sink.h"
+#include "Sink.h"
 
 #include "logger/Exceptions/InvalidLevel.h"
 

@@ -58,6 +58,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC shlg_parent)
 # Public headers
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

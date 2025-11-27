@@ -1,4 +1,4 @@
-#include "logger/OsInfo.h"
+#include "OsInfo.h"
 
 #include <array>
 #include <format>

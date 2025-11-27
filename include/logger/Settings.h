@@ -1,6 +1,8 @@
 #ifndef SHUVLOG_SETTINGS_H
 #define SHUVLOG_SETTINGS_H
 
+#include <cstdint>
+
 namespace logger
 {
 
