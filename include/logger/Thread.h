@@ -1,6 +1,8 @@
 #ifndef SHUVLOG_THREAD_H
 #define SHUVLOG_THREAD_H
 
+#include <format>
+
 namespace logger
 {
 
@@ -33,9 +35,7 @@ namespace logger
      */
     inline std::string getPrettyThreadId(std::thread::id id)
     {
-        std::ostringstream output;
-        output << id;
-        return output.str();
+        return std::format("0x{:x}", std::hash<std::thread::id>{}(id));
     }
 
 }
