@@ -1,7 +1,10 @@
 #ifndef SHUVLOG_LEVEL_H
 #define SHUVLOG_LEVEL_H
 
+#include <string>
 #include <cstdint>
+
+#include "Colors.h"
 
 namespace logger
 {
@@ -52,6 +55,22 @@ namespace level
             case kCritical: return "CRITICAL";
             case kFatal:    return "FATAL";
             default:        return "UNKNOWN";
+        }
+    }
+
+    inline std::string getColor(Level level)
+    {
+        switch (level) {
+            using enum Level;
+            case kDebug:    return COLOR_BRIGHT_BLUE;
+            case kTraceR3:  return COLOR_BRIGHT_BLACK;
+            case kTraceR2:  return COLOR_GREEN;
+            case kTraceR1:  return COLOR_CYAN;
+            case kWarning:  return COLOR_YELLOW;
+            case kError:    return COLOR_RED;
+            case kCritical: return COLOR_MAGENTA;
+            case kFatal:    return BACKGROUND_RED;
+            default: return "";
         }
     }
 

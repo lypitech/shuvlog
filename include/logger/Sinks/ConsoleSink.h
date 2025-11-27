@@ -19,12 +19,14 @@ class ConsoleSink : public Sink
 {
 public:
     explicit ConsoleSink(
+        bool useColors = true,
         sink::Settings settings = sink::Settings()
     );
 
     explicit ConsoleSink(
         sink::FilterMode filterMode,
         uint16_t levelMask,
+        bool useColors = true,
         sink::Settings settings = sink::Settings()
     );
 
@@ -38,6 +40,9 @@ public:
     ) override;
     void flush() override;
     void close() override;
+
+private:
+    bool _useColors;
 };
 
 }
