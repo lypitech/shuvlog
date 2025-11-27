@@ -1,64 +1,80 @@
 #include "logger/Logger.h"
 #include "logger/Sinks/ConsoleSink.h"
+#include "logger/Sinks/LogFileSink.h"
+#include "logger/Sinks/JsonFileSink.h"
+#include "logger/Sinks/NdJsonFileSink.h"
 
-int main(const int argc, const char* argv[]) {
-    logger::sink::Settings shortTimeSinkSettings{
-        .showOnlyTime = true,
-        .showMilliseconds = false
-    };
+int main(const int argc, const char* argv[])
+{
+    using namespace logger;
+    // logger::sink::Settings sinkSettings{
+    //     .showTimestamp = false,
+    //     .showThreadInfo = false,
+    //     .showSource = false,
+    // };
 
-    Logger::getInstance().addSink<logger::ConsoleSink>();
-    Logger::getInstance().addSink<logger::ConsoleSink>(shortTimeSinkSettings); // To differentiate this Sink from the other one.
+    // sink::Settings shortTimeSinkSettings{
+    //     .showOnlyTime = true,
+    //     .showMilliseconds = false
+    // };
 
-    Logger::initialize("Bug demonstration", argc, argv, logger::BuildInfo::unknown());
+    // Logger::getInstance().addSink<ConsoleSink>(
+    //     sink::FilterMode::kAll,
+    //     Level::kTraceR1 | Level::kTraceR2 | Level::kTraceR3,
+    //     true,
+    //     shortTimeSinkSettings
+    // );
+    //
+    // Logger::getInstance().addSink<ConsoleSink>(
+    //     sink::FilterMode::kExplicit,
+    //     Level::kTraceR1 | Level::kTraceR2 | Level::kError | Level::kFatal,
+    //     true,
+    //     shortTimeSinkSettings
+    // );
 
-    LOG_ERR("Duplicate log.");
+    Logger::getInstance().addSink<ConsoleSink>(
+        sink::FilterMode::kAll,
+        Level::kDebug | Level::kTraceR1
+    );
+    // Logger::getInstance().addSink<logger::LogFileSink>(Logger::generateLogFileName("Tester3000", "log"));
+    // Logger::getInstance().addSink<LogFileSink>(
+    //     "logs/latest.log",
+    //     sink::FilterMode::kMinimumLevel,
+    //     static_cast<uint16_t>(Level::kTraceR1)
+    // );
+    // Logger::getInstance().addSink<JsonFileSink>(
+    //     "logs/latest.json",
+    //     sink::FilterMode::kMinimumLevel,
+    //     static_cast<uint16_t>(Level::kTraceR1)
+    // );
+    // Logger::getInstance().addSink<JsonFileSink>("logs/latest.json");
+    // Logger::getInstance().addSink<JsonFileSink>("logs/badjson.txt");
+    // Logger::getInstance().addSink<NdJsonFileSink>("logs/test.ndjson");
+
+    Logger::initialize(
+        "Tester3000",
+        argc, argv,
+        BuildInfo::fromCMake()
+        // logger::Settings(
+        //     // 1,
+        //     // 0
+        // )
+    );
+
+    LOG_DEBUG("Debug log.");
+    LOG_TRACE_R3("Trace 3 test");
+    LOG_TRACE_R2("Trace 2 test");
+    LOG_TRACE_R1("Trace 1 test");
+    LOG_INFO("Info log.");
+    LOG_WARN("Warning log.");
+    LOG_ERR("Error log.");
+    LOG_CRIT("Critical log.");
+    LOG_FATAL("Fatal log.");
+
+    // for (size_t k = 0; k < 100000; ++k) {
+    //     LOG_FATAL("test {}", k);
+    // }
+
+    // raise(11);
     return 0;
 }
-
-// int main(const int argc, const char* argv[])
-// {
-//     // logger::sink::Settings sinkSettings{
-//     //     .showTimestamp = false,
-//     //     .showThreadInfo = false,
-//     //     .showSource = false,
-//     // };
-//
-//     logger::sink::Settings shortTimeSinkSettings{
-//         .showOnlyTime = true,
-//         .showMilliseconds = false
-//     };
-//
-//     Logger::getInstance().addSink<logger::ConsoleSink>(shortTimeSinkSettings);
-//     Logger::getInstance().addSink<logger::ConsoleSink>();
-//     // Logger::getInstance().addSink<logger::LogFileSink>(Logger::generateLogFileName("Tester3000", "log"));
-//     // Logger::getInstance().addSink<logger::LogFileSink>("logs/latest.log", sinkSettings);
-//     // Logger::getInstance().addSink<logger::JsonFileSink>("logs/latest.json");
-//     // Logger::getInstance().addSink<logger::JsonFileSink>("logs/badjson.txt");
-//     // Logger::getInstance().addSink<logger::NdJsonFileSink>("logs/test.ndjson");
-//
-//     Logger::initialize(
-//         "Tester3000",
-//         argc, argv,
-//         logger::BuildInfo::fromCMake()
-//         // logger::Settings(
-//         //     logger::Level::kDebug//,
-//         //     // 1,
-//         //     // 0
-//         // )
-//     );
-//
-//     LOG_DEBUG("Duplicate log.");
-//
-//     // LOG_DEBUG("Debug log.");
-//     // LOG_INFO("Info log.");
-//     //
-//     // Logger::getInstance().addSink<logger::JsonFileSink>("logs/badjson2.txt");
-//     //
-//     // LOG_WARN("Warning log.");
-//     // LOG_ERR("Error log.");
-//     // LOG_CRIT("Critical log.");
-//     // LOG_FATAL("Fatal log.");
-//     // raise(11);
-//     return 0;
-// }
