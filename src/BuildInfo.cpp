@@ -32,7 +32,7 @@ BuildInfo BuildInfo::fromCMake()
         return std::string(macro ? macro : fallback);
     };
 
-    const std::string type = get(SHLG_BUILD_TYPE);
+    std::string type = get(SHLG_BUILD_TYPE);
     const std::string version = get(SHLG_BUILD_VERSION);
     std::string flags = get(SHLG_COMPILER_FLAGS);
     const std::string buildSystem = get(SHLG_BUILD_SYSTEM);
@@ -40,6 +40,10 @@ BuildInfo BuildInfo::fromCMake()
     const std::string compiler =
         get(SHLG_COMPILER_ID) + " " +
         get(SHLG_COMPILER_VERSION, "");
+
+    if (type.empty()) {
+        type = "Unknown";
+    }
 
     if (flags == " ") {
         flags = "None";
