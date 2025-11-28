@@ -6,25 +6,7 @@
 namespace logger
 {
 
-// CMake macros fallback
-#ifndef SHLG_BUILD_TYPE
-#define SHLG_BUILD_TYPE nullptr
-#endif
-#ifndef SHLG_BUILD_VERSION
-#define SHLG_BUILD_VERSION nullptr
-#endif
-#ifndef SHLG_COMPILER_ID
-#define SHLG_COMPILER_ID nullptr
-#endif
-#ifndef SHLG_COMPILER_VERSION
-#define SHLG_COMPILER_VERSION nullptr
-#endif
-#ifndef SHLG_COMPILER_FLAGS
-#define SHLG_COMPILER_FLAGS nullptr
-#endif
-#ifndef SHLG_BUILD_SYSTEM
-#define SHLG_BUILD_SYSTEM nullptr
-#endif
+static const std::string ukw = "Unknown";
 
 /**
  * @class   BuildInfo
@@ -46,14 +28,59 @@ public:
     /**
      * @return  BuildInfo class populated with "Unknown" strings.
      */
-    static BuildInfo unknown();
+    static BuildInfo unknown() {
+        return BuildInfo(ukw, ukw, ukw, ukw, ukw);
+    }
 
     /**
      * @return  An automatically populated BuildInfo class with
      *          information that CMake provides through CMake-generated
      *          macros (e.g. @code SHLG_BUILD_TYPE@endcode)
      */
-    static BuildInfo fromCMake();
+    static BuildInfo fromCMake() {
+        // CMake macros fallback
+#ifndef SHLG_BUILD_TYPE
+#define SHLG_BUILD_TYPE nullptr
+#endif
+#ifndef SHLG_BUILD_VERSION
+#define SHLG_BUILD_VERSION nullptr
+#endif
+#ifndef SHLG_COMPILER_ID
+#define SHLG_COMPILER_ID nullptr
+#endif
+#ifndef SHLG_COMPILER_VERSION
+#define SHLG_COMPILER_VERSION nullptr
+#endif
+#ifndef SHLG_COMPILER_FLAGS
+#define SHLG_COMPILER_FLAGS nullptr
+#endif
+#ifndef SHLG_BUILD_SYSTEM
+#define SHLG_BUILD_SYSTEM nullptr
+#endif
+
+        auto get = [](const char* macro, const std::string& fallback = ukw) {
+            return std::string((macro != nullptr) ? macro : fallback);
+        };
+
+        std::string type = get(SHLG_BUILD_TYPE);
+        const std::string version = get(SHLG_BUILD_VERSION);
+        std::string flags = get(SHLG_COMPILER_FLAGS);
+        const std::string buildSystem = get(SHLG_BUILD_SYSTEM);
+
+        const std::string compiler =
+            get(SHLG_COMPILER_ID) + " " +
+            get(SHLG_COMPILER_VERSION, "");
+
+        if (type.empty()) {
+            type = ukw;
+        }
+
+        if (flags == " ") {
+            flags = "None";
+        }
+
+        return BuildInfo(type, version, compiler, flags, buildSystem);
+    }
 
     /// @return The CMake build type (Debug, Release, etc.).
     [[nodiscard]] std::string getType() const { return _type; }
@@ -88,7 +115,11 @@ private:
         std::string compiler,
         std::string compilerFlags,
         std::string buildSystem
-    );
+    )   : _type(std::move(type))
+        , _version(std::move(version))
+        , _compiler(std::move(compiler))
+        , _compilerFlags(std::move(compilerFlags))
+        , _buildSystem(std::move(buildSystem)) {}
 
     std::string _type;
     std::string _version;
