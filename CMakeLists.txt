@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(shuvlog
-    VERSION 1.2.1
+    VERSION 1.2.2
     DESCRIPTION "Asynchronous, thread-safe, singleton logging engine library"
     HOMEPAGE_URL "https://github.com/lypitech/shuvlog"
     LANGUAGES CXX
@@ -51,9 +51,7 @@ else()
     )
 endif()
 
-# ============================================================
-#  Tests
-# ============================================================
+# --- Tests ---
 if(SHUVLOG_BUILD_TESTS OR PROJECT_IS_TOP_LEVEL)
     enable_testing()
     add_executable(test_shuvlog tests/Tester3000.cpp)
