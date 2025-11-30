@@ -1,11 +1,8 @@
-#include "logger/Exceptions/BadFileExtension.h"
-#include "logger/Exceptions/CouldNotOpenFile.h"
 #include "logger/Logger.h"
-#include "../OsInfo.h"
-#include "logger/Sinks/JsonFileSink.h"
-
+#include "logger/OsInfo.h"
 #include "logger/Thread.h"
-#include "../Timestamp.h"
+#include "logger/Timestamp.h"
+#include "logger/Sinks/JsonFileSink.h"
 
 namespace logger
 {

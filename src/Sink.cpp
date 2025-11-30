@@ -1,6 +1,5 @@
-#include "Sink.h"
-
 #include "logger/Exceptions/InvalidLevel.h"
+#include "logger/Sink.h"
 
 namespace logger
 {

@@ -1,7 +1,7 @@
 #ifndef SHUVLOG_NDJSONFILESINK_H
 #define SHUVLOG_NDJSONFILESINK_H
 
-#include "../../../src/FileSink.h"
+#include "../FileSink.h"
 
 namespace logger
 {

@@ -8,12 +8,12 @@
 #include <thread>
 
 #include "BuildInfo.h"
-#include "../../src/FileSink.h"
+#include "FileSink.h"
 #include "Exceptions/LoggerException.h"
 #include "Level.h"
 #include "Log.h"
 #include "Settings.h"
-#include "../../src/Sink.h"
+#include "Sink.h"
 #include "ThreadSafeQueue.h"
 #include "Exceptions/DuplicateSink.h"
 #include "Sinks/ConsoleSink.h"

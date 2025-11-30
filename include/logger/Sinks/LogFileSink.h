@@ -1,7 +1,7 @@
 #ifndef SHUVLOG_LOGFILESINK_H
 #define SHUVLOG_LOGFILESINK_H
 
-#include "../../../src/FileSink.h"
+#include "../FileSink.h"
 
 namespace logger
 {

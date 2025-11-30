@@ -58,7 +58,6 @@ if(SHUVLOG_BUILD_TESTS OR PROJECT_IS_TOP_LEVEL)
     target_link_libraries(test_shuvlog PRIVATE ${PROJECT_NAME})
     target_include_directories(test_shuvlog PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
     target_compile_definitions(test_shuvlog PRIVATE

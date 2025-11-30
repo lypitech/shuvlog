@@ -1,6 +1,6 @@
 #include <filesystem>
 
-#include "FileSink.h"
+#include "logger/FileSink.h"
 #include "logger/Exceptions/BadFileExtension.h"
 #include "logger/Exceptions/BadRecommendedExtension.h"
 #include "logger/Exceptions/CouldNotOpenFile.h"

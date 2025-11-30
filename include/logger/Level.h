@@ -4,7 +4,7 @@
 #include <string>
 #include <cstdint>
 
-#include "../../src/Colors.h"
+#include "Colors.h"
 
 namespace logger
 {

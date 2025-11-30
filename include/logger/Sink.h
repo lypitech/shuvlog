@@ -3,9 +3,9 @@
 
 #include <string>
 
-#include "../include/logger/BuildInfo.h"
+#include "BuildInfo.h"
 #include "Log.h"
-#include "../include/logger/Settings.h"
+#include "Settings.h"
 
 namespace logger
 {
