@@ -240,7 +240,10 @@ public:
      *                      (e.g., "log", "json" and not ".log", ".json")
      * @return  Generated filename
      */
-    static std::string generateLogFileName(const std::string& projectName, const std::string& extension);
+    static std::string generateLogFileName(
+        std::string projectName,
+        const std::string& extension
+    );
 
     [[nodiscard]] bool isInitialized() const { return _isInitialized; }
     [[nodiscard]] logger::Settings& getSettings() { return _settings; }

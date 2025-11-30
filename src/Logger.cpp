@@ -145,10 +145,11 @@ void Logger::flushBatch(std::vector<Log>& batch)
 }
 
 std::string Logger::generateLogFileName(
-    const std::string& projectName,
+    std::string projectName,
     const std::string& extension
 )
 {
+    std::replace(projectName.begin(), projectName.end(), ' ', '_');
     return std::format(
         "{}_{}.{}",
         projectName, formatTimestamp(system_clock::now(), true, true, true),
