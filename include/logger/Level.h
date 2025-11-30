@@ -3,6 +3,8 @@
 
 #include <string>
 #include <cstdint>
+#include <vector>
+#include <bit>
 
 #include "Colors.h"
 
