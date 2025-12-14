@@ -112,7 +112,7 @@ void ConsoleSink::write(const Log& log)
     out << output;
 
     if (_useColors) {
-        out << COLOR_RESET;
+        out << SHUVLOG_RST;
     }
 }
 
