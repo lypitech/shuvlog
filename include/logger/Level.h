@@ -64,15 +64,15 @@ namespace level
     {
         switch (level) {
             using enum Level;
-            case kDebug:    return COLOR_BRIGHT_BLUE;
-            case kTraceR3:  return COLOR_BRIGHT_BLACK;
-            case kTraceR2:  return COLOR_GREEN;
-            case kTraceR1:  return COLOR_CYAN;
-            case kWarning:  return COLOR_YELLOW;
-            case kError:    return COLOR_RED;
-            case kCritical: return COLOR_MAGENTA;
-            case kFatal:    return BACKGROUND_RED;
-            default: return "";
+            case kDebug:    return SHUVLOG_FG_BR_BLUE;
+            case kTraceR3:  return SHUVLOG_FG_BR_BLACK;
+            case kTraceR2:  return SHUVLOG_FG_GREEN;
+            case kTraceR1:  return SHUVLOG_FG_CYAN;
+            case kWarning:  return SHUVLOG_FG_YELLOW;
+            case kError:    return SHUVLOG_FG_RED;
+            case kCritical: return SHUVLOG_FG_MAGENTA;
+            case kFatal:    return SHUVLOG_BG_RED;
+            default:        return "";
         }
     }
 
