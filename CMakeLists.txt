@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(shuvlog
-    VERSION 1.2.2
+    VERSION 1.2.3
     DESCRIPTION "Asynchronous, thread-safe, singleton logging engine library"
     HOMEPAGE_URL "https://github.com/lypitech/shuvlog"
     LANGUAGES CXX
